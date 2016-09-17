@@ -1,0 +1,31 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"ApacheConf.tmLanguage",
+		"Auto Close HTML Tags",
+		"AutoFileName",
+		"Autoprefixer",
+		"Babel",
+		"BracketHighlighter",
+		"Color Highlighter",
+		"ColorPicker",
+		"Emmet",
+		"Emoji",
+		"ESLint",
+		"GitGutter",
+		"HTML Nest Comments",
+		"HTML-CSS-JS Prettify",
+		"HTML5",
+		"JavaScript Completions",
+		"jQuery",
+		"Package Control",
+		"Sass",
+		"Seti_UI",
+		"Seti_UX",
+		"Syntax Highlighting for Sass"
+	]
+}
