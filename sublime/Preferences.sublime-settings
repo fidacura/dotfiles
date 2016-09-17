@@ -1,0 +1,36 @@
+{
+	"caret_extra_bottom": 3,
+	"caret_extra_top": 3,
+	"caret_extra_width": 2,
+	"color_scheme": "Packages/Seti_UX/Seti.tmTheme",
+	"font_size": 16,
+	"font_options":
+	[
+		"no_bold",
+		"subpixel_antialias"
+	],
+	"highlight_line": true,
+	"overlay_scroll_bars": "enabled",
+	"theme": "Seti.sublime-theme",
+	"translate_tabs_to_space": true,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"file_exclude_patterns":
+	[
+		".DS_Store"
+	],
+	"folder_exclude_patterns":
+	[
+		"bin",
+		".git",
+		".sass-cache",
+		".svn",
+		"dist",
+		"tmp",
+		"wp-admin",
+		"wp-includes"
+	]
+
+}
