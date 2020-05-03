@@ -5,27 +5,33 @@
 	],
 	"installed_packages":
 	[
-		"ApacheConf.tmLanguage",
+		"ApacheConf",
 		"Auto Close HTML Tags",
 		"AutoFileName",
 		"Autoprefixer",
 		"Babel",
 		"BracketHighlighter",
-		"Color Highlighter",
+		"Color Highlight",
 		"ColorPicker",
 		"Emmet",
 		"Emoji",
 		"ESLint",
-		"GitGutter",
+		"fish",
+		"glslViewer",
 		"HTML Nest Comments",
 		"HTML-CSS-JS Prettify",
 		"HTML5",
 		"JavaScript Completions",
 		"jQuery",
+		"Minify",
 		"Package Control",
+		"Processing",
 		"Sass",
 		"Seti_UI",
 		"Seti_UX",
-		"Syntax Highlighting for Sass"
+		"Syntax Highlighting for Sass",
+		"Vue Syntax Highlight",
+		"Vuejs Complete Package",
+		"Vuejs Snippets"
 	]
 }
