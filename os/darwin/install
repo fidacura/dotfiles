@@ -1,0 +1,110 @@
+#!/bin/bash
+# macos installation and setup script; 
+# installs homebrew, packages, and applies system configurations
+
+set -e  # exit on error
+
+echo "🍎 Starting macOS setup and configuration..."
+
+# ================================================================
+# homebrew installation
+# ================================================================
+
+# check if homebrew is installed
+if ! command -v brew &> /dev/null; then
+    echo "📦 Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    
+    # add homebrew to path for current session
+    if [[ $(uname -m) == "arm64" ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    else
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
+else
+    echo "✅ Homebrew already installed"
+fi
+
+# ================================================================
+# packages installation
+# ================================================================
+
+echo "📦 Installing packages from Brewfile..."
+
+# navigate to script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# install packages from brewfile
+if [[ -f "$SCRIPT_DIR/Brewfile" ]]; then
+    brew bundle --file="$SCRIPT_DIR/Brewfile"
+    echo "✅ Packages installed successfully"
+else
+    echo "❌ Brewfile not found in $SCRIPT_DIR"
+    exit 1
+fi
+
+# ================================================================
+# system configurations
+# ================================================================
+
+echo "⚙️ Applying system configurations..."
+
+# apply macos defaults
+if [[ -f "$SCRIPT_DIR/defaults.sh" ]]; then
+    bash "$SCRIPT_DIR/defaults.sh"
+else
+    echo "⚠️ defaults.sh not found, skipping system defaults"
+fi
+
+# configure dock
+if [[ -f "$SCRIPT_DIR/dock.sh" ]]; then
+    bash "$SCRIPT_DIR/dock.sh"
+else
+    echo "⚠️ dock.sh not found, skipping dock configuration"
+fi
+
+# configure finder
+if [[ -f "$SCRIPT_DIR/finder.sh" ]]; then
+    bash "$SCRIPT_DIR/finder.sh"
+else
+    echo "⚠️ finder.sh not found, skipping finder configuration"
+fi
+
+# ================================================================
+# POST-INSTALLATION SETUP
+# ================================================================
+
+echo "🔧 Running post-installation setup..."
+
+# setup rust (if rustup-init was installed)
+if command -v rustup-init &> /dev/null; then
+    echo "🦀 Setting up Rust..."
+    rustup-init -y
+    source ~/.cargo/env
+fi
+
+# setup git configuration (basic)
+if command -v git &> /dev/null; then
+    echo "📝 Setting up Git..."
+    echo "Enter your Git username:"
+    read git_username
+    echo "Enter your Git email:"
+    read git_email
+    
+    git config --global user.name "$git_username"
+    git config --global user.email "$git_email"
+    git config --global init.defaultBranch main
+fi
+
+# ================================================================
+# COMPLETION
+# ================================================================
+
+echo ""
+echo "🎉 macOS setup completed successfully!"
+echo ""
+echo "📋 Next steps:"
+echo "  1. Restart computer to apply all system changes"
+echo "  2. Configure dotfiles with the bootstrap script"
+echo "  3. Set up development environment"
+echo ""

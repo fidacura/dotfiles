@@ -1,0 +1,75 @@
+#!/bin/bash
+
+echo "🎯 Configuring Dock for development environment..."
+
+# ================================================================
+# dock appearance
+# ================================================================
+
+# set the icon size of dock items to 36 pixels
+defaults write com.apple.dock tilesize -int 36
+
+# change minimize/maximize window effect to scale
+#defaults write com.apple.dock mineffect -string "scale"
+
+# minimize windows into their application's icon
+defaults write com.apple.dock minimize-to-application -bool true
+
+# enable spring loading for all dock items
+defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true
+
+# show indicator lights for open applications in the dock
+defaults write com.apple.dock show-process-indicators -bool true
+
+# ================================================================
+# dock behaviour
+# ================================================================
+
+# don't animate opening applications from the dock
+defaults write com.apple.dock launchanim -bool false
+
+# speed up mission control animations
+defaults write com.apple.dock expose-animation-duration -float 0.1
+
+# don't group windows by application in mission control
+defaults write com.apple.dock expose-group-by-app -bool false
+
+# disable dashboard
+defaults write com.apple.dashboard mcx-disabled -bool true
+
+# don't show dashboard as a space
+defaults write com.apple.dock dashboard-in-overlay -bool true
+
+# don't automatically rearrange spaces based on most recent use
+defaults write com.apple.dock mru-spaces -bool false
+
+# remove the auto-hiding dock delay
+defaults write com.apple.dock autohide-delay -float 0
+
+# remove the animation when hiding/showing the dock
+defaults write com.apple.dock autohide-time-modifier -float 0
+
+# automatically hide and show the dock
+defaults write com.apple.dock autohide -bool true
+
+# make dock icons of hidden applications translucent
+defaults write com.apple.dock showhidden -bool true
+
+# ================================================================
+# dock applications (clean slate)
+# ================================================================
+
+# remove all default apps from dock and add essential ones
+defaults write com.apple.dock persistent-apps -array
+
+# add essential applications to dock
+defaults write com.apple.dock persistent-apps -array-add '<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>/Applications/Alacritty.app</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>'
+defaults write com.apple.dock persistent-apps -array-add '<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>/Applications/Google Chrome.app</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>'
+defaults write com.apple.dock persistent-apps -array-add '<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>/Applications/Obsidian.app</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>'
+
+# restart dock to apply changes
+killall Dock
+
+echo "✅ Dock configured successfully"
+
+# ================================================================
