@@ -1,0 +1,324 @@
+# ~/.config/alacritty/alacritty.toml
+
+[general]
+live_config_reload = true
+#import = []  # import additional config files if needed
+
+[env]
+TERM = "xterm-256color"
+COLORTERM = "truecolor"
+
+[window]
+dimensions = { columns = 120, lines = 45 } 
+padding = { x = 12, y = 12 } 
+dynamic_padding = true
+decorations = "full"  # changed from "buttonless" for linux window managers
+opacity = 0.48
+blur = true
+startup_mode = "Windowed"
+title = "Alacritty"
+dynamic_title = true
+resize_increments = true
+# option_as_alt removed - macos specific
+
+[scrolling]
+history = 100000 
+multiplier = 3  # faster scrolling
+
+[font]
+normal = { family = "JetBrains Mono", style = "Regular" }
+bold = { family = "JetBrains Mono", style = "Bold" }
+italic = { family = "JetBrains Mono", style = "Italic" }
+bold_italic = { family = "JetBrains Mono", style = "Bold Italic" }
+size = 13.5 
+offset = { x = 0, y = 6 } 
+glyph_offset = { x = 0, y = 0 }
+builtin_box_drawing = true
+
+[colors]
+draw_bold_text_with_bright_colors = false
+transparent_background_colors = true
+
+# darker one dark theme (enhanced)
+[colors.primary]
+background = "#0d1117"  
+foreground = "#c9d1d9" 
+dim_foreground = "#7d8590"
+
+[colors.cursor]
+text = "#0d1117"
+cursor = "#79c0ff" 
+
+[colors.vi_mode_cursor]
+text = "#0d1117"
+cursor = "#f78166"  
+
+[colors.selection]
+text = "CellForeground"
+background = "#264f78" 
+
+[colors.search.matches]
+foreground = "#0d1117"
+background = "#ffd700"
+
+[colors.search.focused_match]
+foreground = "#0d1117"
+background = "#79c0ff" 
+
+[colors.footer_bar]
+foreground = "#0d1117"
+background = "#c9d1d9"
+
+[colors.hints.start]
+foreground = "#0d1117"
+background = "#ffd700"
+
+[colors.hints.end]
+foreground = "#0d1117"
+background = "#c9d1d9"
+
+[colors.line_indicator]
+foreground = "None"
+background = "None"
+
+# darker one dark theme (enhanced)
+[colors.normal]
+black = "#484f58"    # lighter black for visibility
+red = "#ff7b72"      # brighter red
+green = "#3fb950"    # vibrant green
+yellow = "#d29922"   # warmer yellow
+blue = "#79c0ff"     # bright blue
+magenta = "#bc8cff"  # vivid purple
+cyan = "#39c5cf"     # bright cyan
+white = "#b1bac4"    # soft white
+
+[colors.bright]
+black = "#6e7681"    # bright gray
+red = "#ffa198"      # coral red
+green = "#56d364"    # bright green
+yellow = "#e3b341"   # golden yellow
+blue = "#a5b4fc"     # light blue
+magenta = "#d2a8ff"  # light purple
+cyan = "#56d4dd"     # light cyan
+white = "#f0f6fc"    # bright white
+
+[colors.dim]
+black = "#21262d"
+red = "#f85149"
+green = "#7ee787"
+yellow = "#f9e2af"
+blue = "#58a6ff"
+magenta = "#bc8cff"
+cyan = "#39c5cf"
+white = "#b1bac4"
+
+[bell]
+animation = "EaseOutExpo"
+duration = 150
+color = "#ffd700"  # gold bell color
+# command to run on bell (arch linux can use notify-send or paplay)
+# command = { program = "notify-send", args = ["Terminal Bell"] }
+
+[mouse]
+hide_when_typing = true
+# enable mouse scrolling
+bindings = [
+    { mouse = "Middle", action = "PasteSelection" },
+]
+
+[cursor]
+style = { shape = "Block", blinking = "On" }
+blink_interval = 750  # slower blink for less distraction
+blink_timeout = 8   # longer timeout before blinking starts
+unfocused_hollow = true
+thickness = 0.5
+
+[terminal]
+osc52 = "CopyPaste"
+
+# keyboard bindings - converted from cmd to ctrl for linux
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"  # changed from Command to Ctrl+Shift
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Shift"  # changed from Command to Ctrl+Shift
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "N"
+mods = "Control|Shift"  # changed from Command to Ctrl+Shift
+action = "SpawnNewInstance"
+
+[[keyboard.bindings]]
+key = "T"
+mods = "Control|Shift"  # changed from Command to Ctrl+Shift
+action = "SpawnNewInstance"
+
+[[keyboard.bindings]]
+key = "W"
+mods = "Control|Shift"  # changed from Command to Ctrl+Shift
+action = "Quit"
+
+[[keyboard.bindings]]
+key = "Q"
+mods = "Control|Shift"  # changed from Command to Ctrl+Shift
+action = "Quit"
+
+# font-size controls
+[[keyboard.bindings]]
+key = "Plus"
+mods = "Control"  # changed from Command
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Control"  # changed from Command
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Key0"
+mods = "Control"  # changed from Command
+action = "ResetFontSize"
+
+[[keyboard.bindings]]
+key = "Equals"
+mods = "Control"  # changed from Command
+action = "IncreaseFontSize"
+
+# search functionality
+[[keyboard.bindings]]
+key = "F"
+mods = "Control|Shift"  # changed from Command
+action = "SearchForward"
+
+[[keyboard.bindings]]
+key = "B"
+mods = "Control|Shift"  # changed from Command
+action = "SearchBackward"
+
+[[keyboard.bindings]]
+key = "G"
+mods = "Control|Shift"  # changed from Command
+action = "SearchCancel"
+
+# terminal controls
+[[keyboard.bindings]]
+key = "K"
+mods = "Control|Shift"  # changed from Command
+action = "ClearHistory"
+
+[[keyboard.bindings]]
+key = "L"
+mods = "Control|Shift"  # changed from Command
+action = "ClearLogNotice"
+
+# navigation and scrolling
+[[keyboard.bindings]]
+key = "Home"
+mods = "Control|Shift"  # changed from Command
+action = "ScrollToTop"
+
+[[keyboard.bindings]]
+key = "End"
+mods = "Control|Shift"  # changed from Command
+action = "ScrollToBottom"
+
+[[keyboard.bindings]]
+key = "PageUp"
+action = "ScrollPageUp"
+
+[[keyboard.bindings]]
+key = "PageDown"
+action = "ScrollPageDown"
+
+[[keyboard.bindings]]
+key = "Up"
+mods = "Control|Shift"  # changed from Command
+action = "ScrollLineUp"
+
+[[keyboard.bindings]]
+key = "Down"
+mods = "Control|Shift"  # changed from Command
+action = "ScrollLineDown"
+
+# vi mode toggle (useful for linux terminal navigation)
+[[keyboard.bindings]]
+key = "Space"
+mods = "Control|Shift"
+action = "ToggleViMode"
+
+# tmux integration (jkl; layout) - works same on linux
+[[keyboard.bindings]]
+key = "J"
+mods = "Alt"
+chars = "\u001b[1;3j"  # alt+j for left
+
+[[keyboard.bindings]]
+key = "K"
+mods = "Alt"
+chars = "\u001b[1;3k"  # alt+k for down
+
+[[keyboard.bindings]]
+key = "L"
+mods = "Alt"
+chars = "\u001b[1;3l"  # alt+l for up
+
+[[keyboard.bindings]]
+key = "Semicolon"
+mods = "Alt"
+chars = "\u001b[1;3;"  # alt+; for right
+
+# linux-specific clipboard integration
+[[keyboard.bindings]]
+key = "Insert"
+mods = "Shift"
+action = "PasteSelection"
+
+[[keyboard.bindings]]
+key = "Insert"
+mods = "Control"
+action = "Copy"
+
+# quick window switching adapted for linux
+[[keyboard.bindings]]
+key = "Left"
+mods = "Control|Alt"  # changed from Command|Alt
+action = "SpawnNewInstance"
+
+[[keyboard.bindings]]
+key = "Right"
+mods = "Control|Alt"  # changed from Command|Alt
+action = "SpawnNewInstance"
+
+# clear terminal (works same on linux)
+[[keyboard.bindings]]
+key = "L"
+mods = "Control"
+chars = "\f"
+
+# additional linux-friendly bindings
+[[keyboard.bindings]]
+key = "Return"
+mods = "Control|Shift"
+action = "SpawnNewInstance"
+
+# workspace switching (for window managers like i3, sway)
+[[keyboard.bindings]]
+key = "Key1"
+mods = "Alt"
+chars = "\u001b[1;3~"  # can be customized for wm integration
+
+[[keyboard.bindings]]
+key = "Key2"
+mods = "Alt"
+chars = "\u001b[2;3~"
+
+# debug and misc settings
+[debug]
+render_timer = false
+persistent_logging = false
+log_level = "Warn"
+print_events = false

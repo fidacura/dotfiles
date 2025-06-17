@@ -1,0 +1,158 @@
+# ~/packages.txt
+# usage: pacman -S --needed $(grep -v '^#' packages.txt | grep -v '^$')
+
+# -----------------------------------------------------------------------------
+# terminal  & shell enhancements
+# -----------------------------------------------------------------------------
+
+# terminal emulator
+alacritty 
+
+# terminal tools
+exa
+bat
+delta
+dust
+procs
+
+# shell enhancements
+zsh-autosuggestions 
+zsh-syntax-highlighting
+tmux
+
+# fuzzy finder and search
+fzf
+ripgrep
+fd
+
+# -----------------------------------------------------------------------------
+# system administration
+# -----------------------------------------------------------------------------
+
+# system monitoring
+htop
+btop
+nethogs
+ncdu
+lsof
+
+# networking tools
+rsync
+bind-tools
+nmap
+wireshark-qt
+iperf3
+
+# file management
+tree
+ripgrep
+
+# system analysis
+tcpdump
+strace
+ltrace
+lshw
+dmidecode
+smartmontools
+
+# -----------------------------------------------------------------------------
+# file management and productivity
+# -----------------------------------------------------------------------------
+
+# gui file managers
+thunar
+
+# archive tools
+zip
+unzip
+p7zip
+unrar
+
+# document viewers
+zathura 
+evince
+libreoffice-fresh
+
+# image tools
+feh
+sxiv
+gimp
+imagemagick
+
+# -----------------------------------------------------------------------------
+# dev tools and prodctivity
+# -----------------------------------------------------------------------------
+
+# browsers
+firefox
+chromium
+torbrowser-launcher 
+
+# notes
+obsidian
+
+# programing
+python
+python-pip
+python-virtualenv
+nodejs
+npm
+yarn
+rust
+git
+
+# code editors
+code
+neovim
+
+# dev tools
+insomnia 
+curl
+wget
+
+# local dev
+sqlite
+live-server
+
+# -----------------------------------------------------------------------------
+# communication and email
+# -----------------------------------------------------------------------------
+
+# email clients
+neomutt
+#thunderbird
+
+# messaging
+signal-desktop
+
+# -----------------------------------------------------------------------------
+# media and entertainment
+# -----------------------------------------------------------------------------
+
+# media players
+mpv
+
+# screenshots and recording
+scrot
+maim
+slop
+
+# -----------------------------------------------------------------------------
+# security and privacy
+# -----------------------------------------------------------------------------
+
+# tor
+tor
+
+# vpn
+wireguard-tools
+ufw
+
+# password management
+keepassxc
+
+# system security
+fail2ban
+rkhunter
+lynis
+
