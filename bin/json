@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+# json formatter and validator
+# usage: json [--pretty] [--validate] [--compact]
+
+import json, sys, argparse
+
+# setup command line argument parser with options
+parser = argparse.ArgumentParser(description="format and validate json")
+parser.add_argument('--pretty', '-p', action='store_true', help='pretty print with indentation')
+parser.add_argument('--validate', '-v', action='store_true', help='validate only (no output)')
+parser.add_argument('--compact', '-c', action='store_true', help='compact output (remove all whitespace)')
+
+try:
+    # parse command line arguments
+    args = parser.parse_args()
+    
+    # read json data from stdin (pipe input)
+    input_data = sys.stdin.read()
+    
+    # attempt to parse json; this validates the syntax
+    parsed = json.loads(input_data)
+    
+    # validation mode; check json validity without output
+    if args.validate:
+        print("✅ valid json", file=sys.stderr)
+        sys.exit(0)
+    
+    # format output based on requested style
+    if args.compact:
+        # remove all unnecessary whitespace for minimal size
+        output = json.dumps(parsed, separators=(',', ':'))
+    else:
+        # pretty format with 2-space indentation or compact default
+        output = json.dumps(parsed, indent=2 if args.pretty else None)
+    
+    # output formatted json to stdout
+    print(output)
+
+except json.JSONDecodeError as e:
+    # handle invalid json with clear error message
+    print(f"❌ invalid json: {e}", file=sys.stderr)
+    sys.exit(1)
+except Exception as e:
+    # handle any other errors (file reading, etc.)
+    print(f"❌ error: {e}", file=sys.stderr)
+    sys.exit(1)

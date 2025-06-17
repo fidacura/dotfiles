@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+echo "🔧 Setting up Git configuration..."
+
+# prompt for user details
+read -p "Enter your Git username: " git_username
+read -p "Enter your Git email: " git_email
+
+# set user information
+git config --global user.name "$git_username"
+git config --global user.email "$git_email"
+
+# set common defaults
+git config --global init.defaultBranch main
+git config --global core.editor nvim
+git config --global pull.rebase false
+git config --global push.default simple
+
+# set up aliases
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.unstage 'reset HEAD --'
+git config --global alias.last 'log -1 HEAD'
+git config --global alias.visual '!gitk'
+
+# improved log format
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+
+echo "✅ Git configuration complete!"
+echo "📋 Configured aliases: st, co, br, ci, unstage, last, visual, lg"

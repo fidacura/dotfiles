@@ -1,0 +1,168 @@
+#!/usr/bin/env bash
+# quickly initialize new projects from github bootstraps
+# usage: project <type> <name>
+
+set -euo pipefail
+
+if [[ $# -lt 2 ]]; then
+    echo "Usage: project <type> <name>"
+    echo "Types:"
+    echo "  webapp    - TypeScript SCSS bootstrap"
+    echo "  webshop   - Headless Shopify TypeScript SCSS bootstrap"
+    echo "  react     - React TypeScript SCSS bootstrap"
+    echo "  next      - Next.js TypeScript SCSS bootstrap"
+    echo "  vue       - Vue.js TypeScript SCSS bootstrap"
+    echo "  nuxt      - Nuxt.js TypeScript SCSS bootstrap"
+    echo "  node      - Node.js TypeScript API bootstrap"
+    echo "  python    - Python project bootstrap"
+    echo "  fastapi   - Python FastAPI bootstrap"
+    echo "  rust      - Rust project bootstrap"
+    exit 1
+fi
+
+TYPE="$1"
+NAME="$2"
+
+# github username
+GITHUB_USER="fidacura"
+
+# template repository urls
+declare -A TEMPLATES=(
+    ["webapp"]="https://github.com/$GITHUB_USER/parcel-seed.git"
+    ["webshop"]="https://github.com/$GITHUB_USER/shopify-seed.git"
+    ["react"]="https://github.com/$GITHUB_USER/react-seed.git"
+    ["next"]="https://github.com/$GITHUB_USER/next-seed.git"
+    ["vue"]="https://github.com/$GITHUB_USER/vue-seed.git"
+    ["nuxt"]="https://github.com/$GITHUB_USER/nuxt-seed.git"
+    ["node"]="https://github.com/$GITHUB_USER/node-seed.git"
+    ["python"]="https://github.com/$GITHUB_USER/py-seed.git"
+    ["fastapi"]="https://github.com/$GITHUB_USER/fastapi-seed.git"
+    ["rust"]="https://github.com/$GITHUB_USER/rust-seed.git"
+)
+
+# check if type exists
+if [[ ! -v "TEMPLATES[$TYPE]" ]]; then
+    echo "❌ Unknown project type: $TYPE"
+    echo "💡 Available types: ${!TEMPLATES[*]}"
+    exit 1
+fi
+
+TEMPLATE_URL="${TEMPLATES[$TYPE]}"
+
+echo "🆕 Creating $TYPE project: $NAME"
+echo "📦 Template: $TEMPLATE_URL"
+
+# check if directory already exists
+if [[ -d "$NAME" ]]; then
+    echo "❌ Directory $NAME already exists"
+    exit 1
+fi
+
+# clone template repository
+echo "⬇️  Cloning template..."
+if git clone "$TEMPLATE_URL" "$NAME"; then
+    cd "$NAME"
+    
+    # remove the original git history
+    echo "🧹 Cleaning up template history..."
+    rm -rf .git
+    
+    # initialize new git repository
+    echo "🔧 Initializing new git repository..."
+    git init
+    git add .
+    git commit -m "Initial commit from $TYPE template"
+    
+    # update project name in common files
+    echo "📝 Updating project configuration..."
+    
+    #update package.json name (if it exists)
+    if [[ -f "package.json" ]]; then
+        if command -v jq >/dev/null 2>&1; then
+            jq --arg name "$NAME" '.name = $name' package.json > package.json.tmp && mv package.json.tmp package.json
+        else
+            # fallback without jq
+            sed -i.bak "s/\"name\": \".*\"/\"name\": \"$NAME\"/" package.json && rm package.json.bak
+        fi
+        echo "  ✅ Updated package.json"
+    fi
+    
+    # Update cargo.toml name (if it exists)
+    if [[ -f "Cargo.toml" ]]; then
+        sed -i.bak "s/name = \".*\"/name = \"$NAME\"/" Cargo.toml && rm Cargo.toml.bak
+        echo "  ✅ Updated Cargo.toml"
+    fi
+    
+    # update pyproject.toml (if it exists)
+    if [[ -f "pyproject.toml" ]]; then
+        sed -i.bak "s/name = \".*\"/name = \"$NAME\"/" pyproject.toml && rm pyproject.toml.bak
+        echo "  ✅ Updated pyproject.toml"
+    fi
+    
+    # update README.md title (if it exists)
+    if [[ -f "README.md" ]]; then
+        # Replace first h1 heading with project name
+        sed -i.bak "1s/^# .*/# $NAME/" README.md && rm README.md.bak
+        echo "  ✅ Updated README.md"
+    fi
+    
+    # install dependencies (if package.json exists)
+    if [[ -f "package.json" ]]; then
+        echo "📦 Installing dependencies..."
+        if command -v yarn >/dev/null 2>&1; then
+            yarn install
+        else
+            npm install
+        fi
+    fi
+    
+    # setup Python venv (if requirements.txt exist)
+    if [[ -f "requirements.txt" ]] || [[ -f "pyproject.toml" ]]; then
+        echo "🐍 Setting up Python virtual environment..."
+        python3 -m venv venv
+        echo "💡 Activate with: source venv/bin/activate"
+        if [[ -f "requirements.txt" ]]; then
+            echo "💡 Install deps with: source venv/bin/activate && pip install -r requirements.txt"
+        fi
+    fi
+    
+    # Final git commit with updates
+    if [[ -n $(git status --porcelain) ]]; then
+        git add .
+        git commit -m "Update project configuration for $NAME"
+    fi
+    
+    echo ""
+    echo "✅ Project $NAME created successfully!"
+    echo "📁 Location: $(pwd)"
+    echo "🔗 Template: $TEMPLATE_URL"
+    echo ""
+    echo "📋 Next steps:"
+    echo "  1. cd $NAME"
+    
+    # Type-specific next steps
+    case "$TYPE" in
+        "react"|"next"|"vue"|"nuxt"|"node"|"webapp"|"webshop")
+            echo "  2. npm run dev (or yarn dev)"
+            echo "  3. Open http://localhost:3000"
+            ;;
+        "python")
+            echo "  2. source venv/bin/activate"
+            echo "  3. pip install -r requirements.txt"
+            ;;
+        "rust")
+            echo "  2. cargo run"
+            ;;
+        "go")
+            echo "  2. go run main.go"
+            ;;
+    esac
+    
+    echo "  4. Start coding! 🚀"
+    
+else
+    echo "❌ Failed to clone template repository"
+    echo "💡 Make sure the repository exists and you have access to it"
+    echo "🔗 URL: $TEMPLATE_URL"
+    exit 1
+fi

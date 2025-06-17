@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# simple http server for local development
+# usage: serve [port-number]
+
+set -euo pipefail
+
+# default port
+PORT=${1:-8000}
+
+# check if port is already in use
+if lsof -Pi :$PORT -sTCP:LISTEN -t >/dev/null ; then
+    echo "❌ Port $PORT is already in use"
+    echo "💡 Try: serve [different-port-number]"
+    exit 1
+fi
+
+echo "🚀 Starting HTTP server on port $PORT"
+echo "📂 Serving: $(pwd)"
+echo "🌐 URL: http://localhost:$PORT"
+echo "⏹️  Press Ctrl+C to stop"
+
+# try python3 first, fallback to python
+if command -v python3 >/dev/null 2>&1; then
+    python3 -m http.server $PORT
+elif command -v python >/dev/null 2>&1; then
+    python -m SimpleHTTPServer $PORT
+else
+    echo "❌ Python not found. Please install Python to use this server."
+    exit 1
+fi

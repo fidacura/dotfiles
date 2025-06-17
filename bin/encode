@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# encoding and decoding utilities
+# Usage: encode <type> <string>
+
+set -euo pipefail
+
+if [[ $# -lt 2 ]]; then
+    echo "Usage: encode <type> <string>"
+    echo "Types: url, base64, decode-url, decode-base64"
+    exit 1
+fi
+
+TYPE="$1"
+STRING="$2"
+
+case "$TYPE" in
+    "url")
+        echo "$STRING" | python3 -c "import sys; import urllib.parse; print(urllib.parse.quote(sys.stdin.read().strip()))"
+        ;;
+    "decode-url")
+        echo "$STRING" | python3 -c "import sys; import urllib.parse; print(urllib.parse.unquote(sys.stdin.read().strip()))"
+        ;;
+    "base64")
+        echo -n "$STRING" | base64
+        ;;
+    "decode-base64")
+        echo "$STRING" | base64 -d
+        ;;
+    *)
+        echo "❌ Unknown encoding type: $TYPE"
+        exit 1
+        ;;
+esac

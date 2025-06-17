@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# create timestamped backups of files or directories
+# usage: backup <file-or-directory>
+
+set -euo pipefail
+
+if [[ $# -ne 1 ]]; then
+    echo "Usage: backup <file-or-directory>"
+    exit 1
+fi
+
+SOURCE="$1"
+
+if [[ ! -e "$SOURCE" ]]; then
+    echo "❌ File or directory not found: $SOURCE"
+    exit 1
+fi
+
+# create backup name with timestamp
+BACKUP_NAME="${SOURCE}.backup.$(date +%Y-%m-%d-%H-%M-%S)"
+
+echo "💾 Creating backup..."
+echo "📁 Source: $SOURCE"
+echo "📁 Backup: $BACKUP_NAME"
+
+# copy preserving permissions and timestamps
+cp -R "$SOURCE" "$BACKUP_NAME"
+
+echo "✅ Backup created successfully!"

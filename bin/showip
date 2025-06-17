@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# show your public ip address
+# usage: ./show_ip.sh
+
+set -euo pipefail
+
+echo "🌐 Fetching your public IP address..."
+
+if command -v curl >/dev/null 2>&1; then
+    IP=$(curl -s https://ipinfo.io/ip)
+    echo "📍 Your public IP: $IP"
+    
+    # get more details
+    echo "🔍 Getting location details..."
+    curl -s https://ipinfo.io/$IP | grep -E '"city"|"region"|"country"' | sed 's/[",]//g' | sed 's/^  /📍 /'
+else
+    echo "❌ curl not found. Please install curl to check IP address."
+    exit 1
+fi

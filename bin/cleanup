@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+# clean up common development artifacts
+# usage: ./cleanup.sh
+
+set -euo pipefail
+
+echo "🧹 Cleaning up development files..."
+
+# function to safely remove if exists
+safe_remove() {
+    if [[ -e "$1" ]]; then
+        echo "🗑️  Removing: $1"
+        rm -rf "$1"
+    fi
+}
+
+# node.js 
+safe_remove "node_modules"
+safe_remove "package-lock.json"
+safe_remove "yarn.lock"
+safe_remove ".yarn"
+safe_remove ".pnp"
+safe_remove ".pnp.js"
+
+# parcel
+safe_remove ".parcel-cache"
+safe_remove "dist"
+safe_remove ".cache"
+
+# react/next.js
+safe_remove ".next"
+safe_remove "out"
+safe_remove "build"
+
+# vue/nuxt
+safe_remove ".nuxt"
+safe_remove ".output"
+safe_remove "dist"
+
+# environment and config cache
+safe_remove ".env.local"
+safe_remove ".env.*.local"
+safe_remove ".eslintcache"
+
+# python cleanup
+find . -name "*.pyc" -delete 2>/dev/null || true
+find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
+safe_remove ".pytest_cache"
+safe_remove "*.egg-info"
+safe_remove "build"
+safe_remove "dist"
+
+# rust cleanup
+safe_remove "target"
+safe_remove "Cargo.lock"
+
+# general cleanup
+safe_remove ".DS_Store"
+find . -name ".DS_Store" -delete 2>/dev/null || true
+safe_remove "Thumbs.db"
+safe_remove "*.tmp"
+safe_remove "*.log"
+
+# misc frontend build artifacts
+safe_remove ".vite"
+safe_remove ".turbo"
+safe_remove ".swc"
+safe_remove "coverage"
+safe_remove ".nyc_output"
+safe_remove "storybook-static"
+
+# git cleanup (only in git repos)
+if [[ -d ".git" ]]; then
+    echo "🔧 Running git cleanup..."
+    git gc --prune=now --aggressive 2>/dev/null || true
+fi
+
+echo "✅ Cleanup complete!"

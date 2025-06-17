@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# remove ssh host keys from known_hosts file
+# usage: ssh-forget <host1> [host2] [host3]...
+
+set -euo pipefail
+
+if [[ $# -eq 0 ]]; then
+    echo "Usage: ssh-forget <host1> [host2] [host3]..."
+    exit 1
+fi
+
+for host in "$@"; do
+    echo "🗑️  Forgetting $host..."
+    ssh-keygen -R "$host" 2>/dev/null || echo "⚠️  $host not found in known_hosts"
+done
+
+rm -f ~/.ssh/known_hosts.old
+
+echo "✅ Cleaned up known_hosts"
