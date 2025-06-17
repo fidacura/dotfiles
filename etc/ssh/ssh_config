@@ -1,0 +1,196 @@
+#~/.ssh/config (user-specific) or /etc/ssh/ssh_config (system-wide)
+
+#=========================================================
+# secure defaults for all connections
+#=========================================================
+
+# use ssh protocol 2 only
+Protocol 2
+
+# strict host key verification (security first)
+StrictHostKeyChecking ask
+CheckHostIP yes
+
+# secure cryptographic algorithms only
+HostKeyAlgorithms ssh-ed25519,ecdsa-sha2-nistp256,rsa-sha2-512,rsa-sha2-256
+KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr
+MACs hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-128-etm@openssh.com
+
+#=========================================================
+# authentication preferences
+#=========================================================
+
+# prefer key-based authentication
+PreferredAuthentications publickey,keyboard-interactive,password
+PubkeyAuthentication yes
+
+# disable password authentication by default (enable per-host if needed)
+PasswordAuthentication no
+
+# disable other authentication methods
+HostbasedAuthentication no
+GSSAPIAuthentication no
+ChallengeResponseAuthentication no
+
+#=========================================================
+# connection management
+#=========================================================
+
+# connection timeouts
+ConnectTimeout 30
+ServerAliveInterval 300
+ServerAliveCountMax 2
+
+# connection sharing for performance (simplified)
+ControlMaster auto
+ControlPath ~/.ssh/control-%h-%p-%r
+ControlPersist 10m
+
+# keep connections alive
+TCPKeepAlive yes
+
+# disable compression (security over performance)
+Compression no
+
+#=========================================================
+# security settings
+#=========================================================
+
+# disable dangerous features by default
+ForwardAgent no
+ForwardX11 no
+ForwardX11Trusted no
+
+# strict file permissions
+StrictModes yes
+
+# privacy protection
+HashKnownHosts yes
+
+# use ipv4 only (enable ipv6 if needed)
+AddressFamily inet
+
+#=========================================================
+# key management
+#=========================================================
+
+# specify identity files (modern keys first)
+IdentityFile ~/.ssh/id_ed25519
+IdentityFile ~/.ssh/id_ecdsa
+IdentityFile ~/.ssh/id_rsa
+
+# only use specified keys
+IdentitiesOnly yes
+
+#=========================================================
+# logging
+#=========================================================
+
+# normal logging (increase to VERBOSE for debugging)
+LogLevel INFO
+
+# known hosts files
+UserKnownHostsFile ~/.ssh/known_hosts
+GlobalKnownHostsFile /etc/ssh/ssh_known_hosts
+
+#=========================================================
+# host-specific configurations
+#=========================================================
+
+# production servers - maximum security
+Host prod-* production.* *.prod
+    StrictHostKeyChecking yes
+    PasswordAuthentication no
+    ForwardAgent no
+    LogLevel VERBOSE
+    ServerAliveInterval 60
+
+# development servers - balanced security and convenience
+Host dev-* staging.* *.dev *.staging
+    StrictHostKeyChecking ask
+    PasswordAuthentication yes
+    ForwardAgent yes
+    LogLevel INFO
+
+# local network servers
+Host 192.168.*.* 10.*.*.* 172.16.*.* localhost
+    StrictHostKeyChecking ask
+    CheckHostIP no
+
+# git repositories (github, gitlab, etc.)
+Host github.com gitlab.com *.github.com *.gitlab.com
+    HostKeyAlgorithms ssh-ed25519,ecdsa-sha2-nistp256,rsa-sha2-512
+    MACs hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com
+    KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org
+
+# bastion/jump hosts (if using)
+Host bastion jump
+    ForwardAgent yes
+    ControlPersist 1h
+    ServerAliveInterval 30
+
+#=========================================================
+# common server patterns
+#=========================================================
+
+# vps providers common patterns
+Host *.linode.com *.digitalocean.com
+    User root
+    IdentitiesOnly yes
+    StrictHostKeyChecking ask
+
+# aws ec2 instances
+Host *.amazonaws.com ec2-*
+    User ubuntu
+    IdentitiesOnly yes
+    StrictHostKeyChecking ask
+
+#=========================================================
+# backup and maintenance
+#=========================================================
+
+Host backup-*
+    User backup
+    ForwardAgent no
+    PasswordAuthentication no
+    IdentitiesOnly yes
+
+#=========================================================
+# default settings for all other hosts
+#=========================================================
+
+Host *
+    # use secure defaults
+    Protocol 2
+    ForwardAgent no
+    ForwardX11 no
+    
+    # reasonable timeouts
+    ConnectTimeout 30
+    ServerAliveInterval 300
+    
+    # secure algorithms only
+    HostKeyAlgorithms ssh-ed25519,ecdsa-sha2-nistp256,rsa-sha2-512,rsa-sha2-256
+
+#=========================================================
+# usage examples and notes
+#=========================================================
+
+# common commands:
+# ssh -v hostname              # verbose output for debugging
+# ssh -T git@github.com        # test github connection
+# ssh -o "StrictHostKeyChecking=no" host  # override strict checking (use carefully)
+# ssh-copy-id user@hostname     # copy public key to remote host
+#
+# generate secure keys:
+# ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519       # recommended
+# ssh-keygen -t ecdsa -b 521 -f ~/.ssh/id_ecdsa    # alternative
+# ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa       # compatibility
+#
+# test configuration:
+# ssh -F /path/to/config -T git@github.com
+#
+# copy this config:
+# cp ssh_config ~/.ssh/config
+# chmod 600 ~/.ssh/config
