@@ -1,0 +1,247 @@
+# ~/.gitconfig
+
+[user]
+	name = fidacura
+	email = hey@fidacura.net
+	signingkey = 0x0000000000000000
+
+[github]
+	user = fidacura
+
+[init]
+	defaultBranch = main
+
+[core]
+	editor = nvim               
+	autocrlf = false            
+	excludesfile = ~/.gitignore_global
+	pager = delta               
+	quotepath = false           
+	trustctime = false          
+	compression = 9             
+	precomposeunicode = true    # macos unicode normalization
+
+[color]
+	ui = auto                   
+	branch = auto
+	diff = auto
+	status = auto
+
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+
+[color "status"]
+	added = green
+	changed = yellow
+	untracked = cyan
+
+# ================================================================
+# aliases (productivity shortcuts)
+# ================================================================
+
+[alias]
+	# basic shortcuts
+	st = status
+	co = checkout
+	br = branch
+	ci = commit
+	di = diff
+	dc = diff --cached
+	
+	# advanced shortcuts
+	unstage = reset HEAD --
+	last = log -1 HEAD
+	visual = !gitk
+	amend = commit --amend --no-edit
+	
+	# beautify log formats
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	lga = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
+	tree = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
+	
+	# workflow helpers
+	wip = commit -am "WIP: work in progress"
+	undo = reset --soft HEAD~1
+	uncommit = reset --soft HEAD~1
+	
+	# information commands
+	who = shortlog -sne
+	oneline = log --oneline
+	recent = branch --sort=-committerdate
+	
+	# cleanup commands
+	cleanup = "!git branch --merged | grep -v '\\*\\|main\\|master\\|develop' | xargs -n 1 git branch -d"
+	prune-all = !git remote | xargs -n 1 git remote prune
+	
+	# search commands
+	grep-all = "!git rev-list --all | xargs git grep"
+	find-file = "!git ls-files | grep -i"
+	
+	# diff helpers
+	word-diff = diff --color-words
+	char-diff = diff --color-words=.
+
+# ================================================================
+# branch and remote configuration
+# ================================================================
+
+[branch]
+	autosetupmerge = always
+	autosetuprebase = always
+
+[remote "origin"]
+	prune = true
+
+# ================================================================
+# security and signing
+# ================================================================
+
+[commit]
+	verbose = true        
+	gpgsign = true        # sign all commits with gpg
+
+[tag]
+	gpgsign = true        # sign all tags with gpg
+
+[gpg]
+	program = gpg         # gpg program path
+
+# ================================================================
+# merge and rebase
+# ================================================================
+
+[merge]
+	tool = nvimdiff       
+	conflictstyle = zdiff3 # use zdiff3 style for conflicts
+
+[mergetool]
+	prompt = false
+	keepBackup = false    # don't keep .orig files
+
+[mergetool "nvimdiff"]
+	cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
+[rebase]
+	autoStash = true      # automatically stash changes before rebase
+	updateRefs = true     # update dependent branches during rebase
+
+# ================================================================
+# push and pull 
+# ================================================================
+
+[push]
+	default = simple      # push current branch to same name on remote
+	followTags = true     # push tags along with commits
+	autoSetupRemote = true # automatically set up remote tracking
+
+[pull]
+	rebase = true         # rebase instead of merge on pull
+	ff = only             # only allow fast-forward pulls
+
+# ================================================================
+# fetch
+# ================================================================
+
+[fetch]
+	prune = true          # remove deleted remote branches
+	pruneTags = true      # remove deleted remote tags
+
+# ================================================================
+# diff
+# ================================================================
+
+[diff]
+	algorithm = histogram # use histogram diff algorithm
+	renames = copies      # detect renames and copies
+	mnemonicPrefix = true # use mnemonic prefixes (i)ndex, (w)ork tree, (c)ommit, (o)bject
+	compactionHeuristic = true # more readable diffs
+
+[diff "bin"]
+	textconv = hexdump -v -C  # show binary files in hex
+
+# ================================================================
+# credential management
+# ================================================================
+
+[credential]
+	helper = osxkeychain 
+
+# ================================================================
+# performance optimizations
+# ================================================================
+
+[index]
+	version = 4           # faster index operations
+
+[feature]
+	manyFiles = true      # optimize for repositories with many files
+
+[fsck]
+	zeroPaddedFilemode = ignore  # ignore zero-padded file modes
+
+# ================================================================
+# protocol and security
+# ================================================================
+
+[protocol]
+	version = 2           # use git protocol v2 for better performance
+
+[transfer]
+	fsckobjects = true    # verify objects when receiving
+
+[http]
+	cookiefile = ~/.gitcookies
+	sslVerify = true      # always verify ssl certificates
+
+# ================================================================
+# advice and warnings
+# ================================================================
+
+[advice]
+	statusHints = false
+	detachedHead = false
+	skippedCherryPicks = false
+	pushUpdateRejected = false
+	resolveConflict = false
+
+# ================================================================
+# experimental features
+# ================================================================
+
+# [maintenance]
+# 	repo = /path/to/important/repo  # enable background maintenance
+
+# [rerere]
+# 	enabled = true        # remember resolved conflicts
+
+# [status]
+# 	showUntrackedFiles = all  # show all untracked files
+
+# ================================================================
+# delta configuration (enhanced diff tool)
+# ================================================================
+
+[delta]
+	navigate = true       # use n and N to move between diff sections
+	light = false         # use dark theme
+	line-numbers = true   # show line numbers
+	syntax-theme = OneHalfDark  # match your editor theme
+	features = side-by-side line-numbers decorations
+	whitespace-error-style = 22 reverse
+
+[delta "decorations"]
+	commit-decoration-style = bold yellow box ul
+	file-style = bold yellow ul
+	file-decoration-style = none
+
+[interactive]
+	diffFilter = delta --color-only  # use delta for interactive diffs

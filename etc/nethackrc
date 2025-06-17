@@ -1,0 +1,79 @@
+# ~/.nethackrc
+
+# strategic control settings - disable automation for tactical awareness
+OPTIONS=!autopickup          # manual item selection prevents inventory clutter
+OPTIONS=!autoquiver          # deliberate ammunition management for combat strategy
+OPTIONS=!cmdassist           # direct command input for experienced players
+OPTIONS=!legacy              # enable modern nethack features and improvements
+
+# gameplay enhancement features
+OPTIONS=autodescribe         # automatic item descriptions save examination time
+OPTIONS=autodig              # continue digging operations when interrupted
+
+# display and interface configuration
+OPTIONS=color                # color coding for quick visual item identification
+OPTIONS=windowtype:curses    # modern terminal interface with better control
+OPTIONS=menu_objsyms         # item symbols in menus for faster recognition
+OPTIONS=menustyle:partial    # efficient menu display without screen clutter
+OPTIONS=perm_invent          # persistent inventory window for constant awareness
+OPTIONS=rest_on_space        # spacebar rest command for quick recovery
+
+# information display for tactical decision making
+OPTIONS=showexp              # experience point tracking for level planning
+OPTIONS=time                 # game time display for timing-sensitive actions
+OPTIONS=showrace             # character race display in status
+OPTIONS=showdmg              # damage numbers for combat effectiveness analysis
+OPTIONS=showtime             # elapsed real time in status line
+
+# character configuration and preferences
+OPTIONS=catname:Mao          # consistent pet naming for role-playing
+OPTIONS=dogname:Sparky       # personal preference for canine companion
+OPTIONS=horsename:Akt        # mount naming for consistency
+OPTIONS=pettype:dog          # default pet type selection
+OPTIONS=fruit:guava          # personal fruit preference for food items
+OPTIONS=name:Eitri,gender:male,race:dwarf,role:valkyrie,align:lawful  # default character template
+
+# safety and confirmation systems
+OPTIONS=confirm              # confirm potentially dangerous actions
+OPTIONS=paranoid_confirmation:quit attacks pray wand Remove  # critical action confirmations
+OPTIONS=hp_monitor           # health monitoring for survival awareness
+OPTIONS=checkpoint           # periodic game state saving for crash recovery
+
+# interface and usability improvements  
+OPTIONS=!news                # skip startup news for faster game entry
+OPTIONS=lit_corridor         # enhanced dungeon visibility
+OPTIONS=verbose              # detailed action descriptions for learning
+OPTIONS=sound                # audio feedback if terminal supports it
+OPTIONS=number_pad:0         # laptop-friendly movement without numpad
+OPTIONS=mouse_support        # mouse integration for modern terminal environments
+
+# inventory and pickup management
+PICKUP_TYPES=$/=!?+          # selective pickup types when autopickup enabled
+OPTIONS=pickup_burden:unencumbered  # prevent over-encumbrance from autopickup
+
+# visual enhancements for better gameplay
+OPTIONS=IBMgraphics          # improved dungeon appearance with special characters
+OPTIONS=statushilites        # highlight important status changes
+OPTIONS=hilite_pet           # visual emphasis on pet status changes
+OPTIONS=sortpack             # organized inventory sorting by item type
+OPTIONS=use_darkgray         # improved visual contrast for dungeon features
+OPTIONS=showscore            # score tracking for competitive play analysis
+OPTIONS=mention_walls        # explicit wall mentions for better spatial awareness
+
+# message and communication systems
+OPTIONS=msg_window:reversed  # message history with newest first
+OPTIONS=bones                # enable interaction with previous character remains
+
+# advanced gameplay options (commented out - enable as needed)
+#OPTIONS=wizard              # debugging mode for testing (remove for normal play)
+#OPTIONS=explore_mode        # easier difficulty mode (remove for standard challenge)
+
+# autopickup exception rules - active when autopickup is enabled
+# security rules to prevent dangerous automatic actions
+AUTOPICKUP_EXCEPTION=">.*cursed.*"     # never automatically pick up cursed items
+AUTOPICKUP_EXCEPTION=">.*heavy.*"      # avoid heavy items that cause burden
+
+# valuable item collection when autopickup enabled
+AUTOPICKUP_EXCEPTION="<*gold*"         # always collect currency
+AUTOPICKUP_EXCEPTION="<*gem*"          # always collect valuable gems  
+AUTOPICKUP_EXCEPTION="<*potion.*heal*" # always collect healing potions

@@ -1,0 +1,315 @@
+{
+  // ~/.config/Code/User/settings.json
+
+  // ================================================================
+  // privacy and telemetry settings
+  // ================================================================
+  "telemetry.telemetryLevel": "off",
+  "telemetry.enableCrashReporter": false,
+  "telemetry.enableTelemetry": false,
+  "update.enableWindowsBackgroundUpdates": false,
+  "extensions.autoCheckUpdates": false,
+  "extensions.autoUpdate": false,
+  "workbench.enableExperiments": false,
+  "workbench.settings.enableNaturalLanguageSearch": false,
+  "npm.fetchOnlinePackageInfo": false,
+
+  // ================================================================
+  // editor appearance and behavior
+  // ================================================================
+  "workbench.colorTheme": "GitHub Dark Default",
+  "workbench.activityBar.visible": true,
+  "workbench.startupEditor": "none",
+  "workbench.statusBar.visible": true,
+  "workbench.sideBar.location": "left",
+  "breadcrumbs.enabled": false,
+  "window.zoomLevel": 0,
+  "window.menuBarVisibility": "toggle",
+
+  // ================================================================
+  // editor configuration
+  // ================================================================
+  "editor.fontFamily": "JetBrains Mono, Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontSize": 13,
+  "editor.fontLigatures": true,
+  "editor.lineHeight": 1.6,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": true,
+  "editor.trimAutoWhitespace": true,
+  "editor.lineNumbers": "relative",
+  "editor.cursorBlinking": "phase",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.smoothScrolling": true,
+
+  // ================================================================
+  // code formatting and linting
+  // ================================================================
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit",
+    "source.removeUnusedImports": "explicit"
+  },
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+
+  // ================================================================
+  // language-specific editor settings
+  // ================================================================
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true
+  },
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "editor.formatOnSave": true
+  },
+  "[go]": {
+    "editor.defaultFormatter": "golang.go",
+    "editor.formatOnSave": true
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.wordWrap": "on",
+    "editor.lineNumbers": "off",
+    "editor.minimap.enabled": false
+  },
+
+  // ================================================================
+  // vim configuration
+  // ================================================================
+  "vim.easymotion": true,
+  "vim.leader": "<space>",
+  "vim.useSystemClipboard": true,
+  "vim.highlightedyank.enable": true,
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["[", "l"],
+      "commands": ["editor.action.marker.prevInFiles"]
+    },
+    {
+      "before": ["]", "l"],
+      "commands": ["editor.action.marker.nextInFiles"]
+    },
+    {
+      "before": ["<leader>", "f"],
+      "commands": ["workbench.action.quickOpen"]
+    },
+    {
+      "before": ["<leader>", "p"],
+      "commands": ["workbench.action.showCommands"]
+    }
+  ],
+
+  // ================================================================
+  // terminal configuration
+  // ================================================================
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "terminal.integrated.fontFamily": "JetBrains Mono, Menlo, Monaco",
+  "terminal.integrated.fontSize": 12,
+  "terminal.integrated.macOptionIsMeta": true,
+  "terminal.integrated.scrollback": 10000,
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorStyle": "line",
+
+  // ================================================================
+  // file associations and editor associations
+  // ================================================================
+  "files.associations": {
+    "*.conf": "properties",
+    "sshd_config": "properties",
+    "ssh_config": "properties",
+    "gpg.conf": "properties",
+    "gpg-agent.conf": "properties",
+    "*.curlrc": "properties",
+    "curlrc": "properties",
+    "tmux.conf": "tmux",
+    ".tmux.conf": "tmux",
+    "zshrc": "shellscript",
+    ".zshrc": "shellscript",
+    "*.zsh": "shellscript",
+    "bitcoin.conf": "properties",
+    "nethackrc": "properties",
+    ".nethackrc": "properties",
+    "neomuttrc": "muttrc",
+    ".neomuttrc": "muttrc",
+    "Dockerfile*": "dockerfile",
+    "*.env*": "properties"
+  },
+  "workbench.editorAssociations": {
+    "*.md": "vscode.markdown.preview.editor"
+  },
+
+  // ================================================================
+  // language server and IntelliSense configuration
+  // ================================================================
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.suggest.autoImports": true,
+  "typescript.suggest.autoImports": true,
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.importModuleSpecifier": "relative",
+
+  // eslint configuration
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "eslint.codeActionsOnSave.mode": "problems",
+
+  // python configuration
+  "python.defaultInterpreterPath": "/usr/local/bin/python3",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.formatting.provider": "black",
+
+  // rust configuration
+  "rust-analyzer.checkOnSave.command": "clippy",
+  "rust-analyzer.cargo.buildScripts.enable": true,
+  "rust-analyzer.procMacro.enable": true,
+
+  // go configuration
+  "go.formatTool": "goimports",
+  "go.lintOnSave": "package",
+  "go.vetOnSave": "package",
+
+  // java configuration
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.compile.nullAnalysis.mode": "automatic",
+
+  // ================================================================
+  // github copilot and AI assistance
+  // ================================================================
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": false,
+    "plaintext": false,
+    "markdown": false,
+    "env": false,
+    "properties": false
+  },
+  "editor.inlineSuggest.enabled": true,
+  "editor.suggestSelection": "first",
+
+  // ================================================================
+  // git and version control
+  // ================================================================
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "git.autofetchPeriod": 180,
+  "git.enableStatusBarSync": true,
+  "scm.diffDecorations": "all",
+
+  // ================================================================
+  // search and file management
+  // ================================================================
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/target": true,
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/coverage": true,
+    "**/.nyc_output": true,
+    "**/.vscode": true
+  },
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/.git": false
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/target/**": true,
+    "**/.git/**": true
+  },
+
+  // ================================================================
+  // production and workflow settings
+  // ================================================================
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.openEditors.visible": 0,
+  "workbench.tree.indent": 20,
+  "workbench.list.smoothScrolling": true,
+  "editor.minimap.enabled": true,
+  "editor.minimap.size": "fit",
+  "editor.rulers": [80, 120],
+  "editor.wordWrap": "off",
+  "editor.accessibilitySupport": "off",
+
+  // ================================================================
+  // debugging and disassembly settings
+  // ================================================================
+  "debug.disassemblyView.showSourceCode": false,
+  "debug.inlineValues": "auto",
+  "debug.showBreakpointsInOverviewRuler": true,
+
+  // ================================================================
+  // extension and plugin settings
+  // ================================================================
+  "boot-java.rewrite.reconcile": true,
+  "solidity.telemetry": false,
+  "redhat.telemetry.enabled": false,
+
+  // emmet configuration
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "typescript": "typescriptreact"
+  },
+
+  // auto-save configuration
+  "files.autoSave": "onFocusChange",
+  "files.autoSaveDelay": 1000,
+
+  // workspace trust
+  "security.workspace.trust.untrustedFiles": "prompt",
+  "security.workspace.trust.enabled": true
+}

@@ -1,0 +1,167 @@
+# ~/.gitignore_global
+# global gitignore for system, editor, and dev environments;
+# usage: git config --global core.excludesfile ~/.gitignore_global
+
+# ================================================================
+# macos system files
+# ================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.DocumentRevisions-V100
+.fseventsd
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# ================================================================
+# linux system files
+# ================================================================
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ================================================================
+# EDITOR AND IDE FILES
+# ================================================================
+
+# nvim/vim
+.nvimlog
+.nvim/
+*.swp
+*.swo
+*~
+.viminfo
+.vimrc.local
+
+# vscode
+.vscode/
+*.code-workspace
+.history/
+
+# ================================================================
+# dev environments files
+# ================================================================
+
+# python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+.Python
+.python-version
+.pytest_cache/
+.coverage
+.tox/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+.stylelintcache
+
+# rust
+target/
+Cargo.lock
+**/*.rs.bk
+
+# ================================================================
+# build and cache directories
+# ================================================================
+build/
+dist/
+out/
+.cache/
+.tmp/
+.temp/
+*.tmp
+*.cache
+
+# ================================================================
+# log files
+# ================================================================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ================================================================
+# backup files
+# ================================================================
+*.bak
+*.backup
+*.old
+*.orig
+*.save
+*.swp
+*.tmp
+
+# ================================================================
+# compressed files (often builds)
+# ================================================================
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# ================================================================
+# personal and temporary files
+# ================================================================
+notes.md
+notes.txt
+TODO.md
+NOTES.md
+.notes/
+personal/
+scratch/
+temp/
+.jj
+
+# ================================================================
+# security and sensitive files
+# ================================================================
+*.pem
+*.key
+*.p12
+*.pfx
+.env.local
+.env.*.local
+.env.secret
+*.secret
+
+# ================================================================
+# database files
+# ================================================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ================================================================
+# package manager files
+# ================================================================
+.bundle/
+vendor/
+Gemfile.lock
+poetry.lock
+Pipfile.lock
+yarn.lock
+package-lock.json
+composer.lock

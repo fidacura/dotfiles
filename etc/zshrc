@@ -1,0 +1,53 @@
+# ~/.zshrc
+
+# core zsh options and behavior
+setopt auto_remove_slash          # remove trailing slash from completions
+setopt hist_expire_dups_first     # expire duplicate history entries first
+setopt hist_ignore_dups           # don't save duplicate history entries
+setopt hist_ignore_space          # ignore commands starting with space
+setopt inc_append_history         # save history immediately
+setopt interactive_comments       # allow comments in interactive mode
+setopt prompt_subst               # enable prompt substitution
+setopt share_history              # share history between sessions
+
+# disable unwanted options
+unsetopt beep                     # never beep
+unsetopt correct                  # don't correct command spelling
+
+# history configuration
+export HISTFILE=~/.zsh_history
+export HISTSIZE=50000
+export SAVEHIST=50000
+
+# environment setup
+export EDITOR="vim"
+export VISUAL="vim"
+export PAGER="less"
+export LANG="en_US.UTF-8"
+export KEYTIMEOUT=1               # faster mode switching
+
+# macos specific initialization - moved before other sources
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # nix package manager path - critical to be first
+    export PATH=$HOME/.nix-profile/bin:$PATH
+    
+    # nix darwin static config
+    if [ -e '/etc/static/zshrc' ]; then
+        source '/etc/static/zshrc'
+    fi
+    
+    # homebrew setup
+    if [[ -f "/opt/homebrew/bin/brew" ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+fi
+
+# load modular components in proper order
+source ~/.config/zsh/exports.zsh      # environment variables and path
+source ~/.config/zsh/functions.zsh    # custom functions (corrected)
+source ~/.config/zsh/plugins.zsh      # external plugins (corrected)
+source ~/.config/zsh/completion.zsh   # completion setup
+source ~/.config/zsh/keybindings.zsh  # key mappings
+source ~/.config/zsh/aliases.zsh      # command aliases
+source ~/.config/zsh/clipboard.zsh    # clipboard integration
+source ~/.config/zsh/prompt.zsh       # prompt configuration
