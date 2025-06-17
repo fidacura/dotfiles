@@ -1,0 +1,185 @@
+# ~/.config/neomutt/neomuttrc
+
+# basic user configuration
+set editor = "nvim"              # use preferred editor
+set my_name = "fidacura"         # replace with your name
+set realname = "fidacura"        # replace with your real name
+
+# secure imap/smtp connection settings - using environment variables
+set folder = "imaps://imap.yourprovider.com:993/"
+set imap_user = $MAILBOX_USER    # set in environment
+set imap_pass = $MAILBOX_PASSWORD # set in environment  
+set smtp_url = "smtps://$MAILBOX_USER@smtp.yourprovider.com:465/"
+set smtp_pass = $MAILBOX_PASSWORD
+
+# imap performance and reliability optimization
+set imap_keepalive = 300         # keep connection alive for 5 minutes
+set mail_check = 60              # check for new mail every minute
+set imap_check_subscribed = yes  # automatically check subscribed folders
+set imap_idle = yes              # use imap idle for real-time updates
+set timeout = 10                 # reduce timeout for faster response
+
+# folder browser configuration for better navigation
+set browser_sort = "alpha"       # alphabetical sorting in folder browser
+set browser_abbreviate_mailboxes = no  # show full mailbox names
+
+# primary mailbox configuration
+set spoolfile = "+INBOX"         # default inbox location
+set record = "+Sent"             # sent messages folder
+set postponed = "+Drafts"        # draft messages storage
+set trash = "+Trash"             # deleted messages location
+
+# default sender configuration
+set from = "your-email@domain.net"    # replace with your primary email
+
+# message handling and display preferences
+set sort = threads               # group messages by conversation thread
+set sort_aux = reverse-last-date-received  # newest messages first within threads
+set edit_headers = yes           # allow header editing during compose
+set fast_reply = yes             # skip prompts for quick replies
+set include = yes                # include original message in replies
+set forward_quote = yes          # quote forwarded messages
+set mime_forward = yes           # forward as mime attachments when appropriate
+
+# sidebar configuration for multi-domain email management
+set sidebar_visible = yes        # show folder sidebar by default
+set sidebar_width = 35           # sidebar width in characters
+set sidebar_format = "%D%* %?N?%N/?%S"  # folder name with unread count
+set sidebar_short_path = yes     # abbreviate long folder paths
+
+# mailbox organization - customize with your email addresses
+mailboxes \
+    "+INBOX" \
+    "+personal@domain1.com" \
+    "+business@domain2.com" \
+    "+project@domain3.com" \
+    "+Sent" \
+    "+Drafts" \
+    "+Trash" \
+    "+Junk"
+
+# index navigation with vim-like keys
+bind index j next-entry          # move down in message list
+bind index k previous-entry      # move up in message list  
+bind index l display-message     # open selected message
+bind index h exit                # return to previous view
+bind index gg first-entry        # jump to first message
+bind index G last-entry          # jump to last message
+bind index <space> collapse-thread  # toggle thread collapse
+
+# pager navigation for reading messages
+bind pager j next-line           # scroll down one line
+bind pager k previous-line       # scroll up one line
+bind pager h exit                # return to message list
+bind pager gg top                # jump to message beginning
+bind pager G bottom              # jump to message end
+bind pager <up> previous-entry   # previous message while reading
+bind pager <down> next-entry     # next message while reading
+
+# sidebar navigation for folder switching
+bind index,pager \CJ sidebar-prev     # move up in sidebar
+bind index,pager \CK sidebar-next     # move down in sidebar  
+bind index,pager \CE sidebar-open     # open selected folder
+bind index,pager B sidebar-toggle-visible  # toggle sidebar visibility
+
+# folder navigation shortcuts
+bind index c change-folder       # change to different folder
+bind pager c change-folder       # change folder from pager view
+
+# domain-specific folder shortcuts for quick navigation
+macro index 1 '<change-folder>+personal@domain1.com<enter>' "go to personal email"
+macro index 2 '<change-folder>+business@domain2.com<enter>' "go to business email"
+macro index 3 '<change-folder>+project@domain3.com<enter>' "go to project email"
+
+# system folder shortcuts
+macro index 0 '<change-folder>+INBOX<enter>' "go to main inbox"
+macro index 9 '<change-folder>+Sent<enter>' "go to sent folder"
+
+# efficient domain folder navigation
+macro index \Cn '<sidebar-next><sidebar-open>' "next domain folder"
+macro index \Cp '<sidebar-prev><sidebar-open>' "previous domain folder"
+
+# compose shortcuts with automatic from address setting
+macro index <F1> '<enter-command>set from="personal@domain1.com"<enter><compose>' "compose from personal"
+macro index <F2> '<enter-command>set from="business@domain2.com"<enter><compose>' "compose from business"
+macro index <F3> '<enter-command>set from="project@domain3.com"<enter><compose>' "compose from project"
+
+# automatic reply address matching based on original recipient
+reply-hook '~t personal@domain1\.com' 'set from="personal@domain1.com"'
+reply-hook '~t business@domain2\.com' 'set from="business@domain2.com"'
+reply-hook '~t project@domain3\.com' 'set from="project@domain3.com"'
+
+# color scheme for visual organization and readability
+color normal        default         default
+color error         red             default
+color indicator     black           yellow         # selected message highlighting
+color status        brightgreen     blue           # status bar colors
+color tree          red             default        # thread tree characters
+color signature     red             default        # message signatures
+color attachment    brightyellow    red            # file attachments
+color search        black           yellow         # search highlighting
+
+# header field color coding for quick scanning
+color header        brightred       default  "^(From|Subject):"
+color header        brightgreen     default  "^(To|Cc|Bcc):"
+color header        yellow          default  "^Date:"
+
+# message list color coding by status
+color index         cyan            default  "~A"   # all messages
+color index         red             default  "~D"   # deleted messages
+color index         brightgreen     default  "~N"   # new messages
+color index         yellow          default  "~O"   # old messages
+color index         magenta         default  "~F"   # flagged messages
+
+# domain-specific color coding for quick identification
+color index         brightgreen     default  "~t personal@domain1\.com"
+color index         brightyellow    default  "~t business@domain2\.com"
+color index         brightwhite     default  "~t project@domain3\.com"
+
+# sidebar visual enhancements
+color sidebar_new       green       default    # folders with new messages
+color sidebar_flagged   red         default    # folders with flagged messages
+color sidebar_divider   blue        default    # sidebar separator line
+color sidebar_highlight black       yellow     # selected folder highlighting
+
+# security: gpg/pgp configuration for encrypted communications
+set crypt_use_gpgme = yes           # use gpgme for encryption operations
+set crypt_verify_sig = yes          # automatically verify message signatures
+set pgp_use_gpg_agent = yes         # use gpg-agent for key management
+# set pgp_default_key = "YOUR_KEY_ID"  # uncomment and set your key
+
+# security: additional encryption preferences
+set crypt_autosign = no             # don't auto-sign messages (manual control)
+set crypt_autoencrypt = no          # don't auto-encrypt messages (manual control)
+set crypt_replyencrypt = yes        # encrypt replies to encrypted messages
+set crypt_replysign = yes           # sign replies to signed messages
+
+# performance: message caching for faster operation
+set header_cache = "~/.cache/neomutt/headers"      # header cache location
+set message_cachedir = "~/.cache/neomutt/bodies"   # message body cache
+set header_cache_backend = lmdb     # efficient database backend for caching
+
+# utility integration for enhanced functionality
+macro index,pager U "<pipe-message> urlscan<Enter>" "extract urls from message"
+
+# security: ssl/tls verification for secure connections
+set ssl_verify_dates = yes          # verify certificate dates
+set ssl_verify_host = yes           # verify certificate hostname
+set ssl_force_tls = yes             # require tls for all connections
+
+# workflow shortcuts for common actions
+macro index A "<tag-pattern>~A<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all read"
+macro index D "<tag-pattern>~A<enter><tag-prefix><delete-message><sync-mailbox><untag-pattern>.<enter>" "delete all messages"
+
+# help and documentation reference
+# inbox purpose: main email + any unfiltered emails
+# domain folders: emails sent specifically to those addresses
+# 
+# navigation shortcuts:
+# 0 = main inbox | 1-3 = domain folders | 9 = sent folder
+# f1-f3 = compose from specific domain
+# ctrl+n/p = navigate between domain folders
+# $ = check for new mail | c = change folder | b = toggle sidebar
+# space = collapse/expand thread | a = mark all read
+# 
+# workflow: check sidebar for new mail counts, press number to go to that folder
