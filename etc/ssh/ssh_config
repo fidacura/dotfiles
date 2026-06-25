@@ -110,7 +110,6 @@ Host prod-* production.* *.prod
 Host dev-* staging.* *.dev *.staging
     StrictHostKeyChecking ask
     PasswordAuthentication yes
-    ForwardAgent yes
     LogLevel INFO
 
 # local network servers
@@ -136,7 +135,6 @@ Host bastion jump
 
 # vps providers common patterns
 Host *.linode.com *.digitalocean.com
-    User root
     IdentitiesOnly yes
     StrictHostKeyChecking ask
 
