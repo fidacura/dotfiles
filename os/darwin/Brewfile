@@ -1,22 +1,19 @@
-tap "homebrew/cask"
-tap "homebrew/services"
-
-
 # ─────────────────────────────────────────
 # Terminals
 # ─────────────────────────────────────────
 cask "alacritty"
 cask "iterm2"
 
-
 # ─────────────────────────────────────────
 # Shell & Terminal
 # ─────────────────────────────────────────
+brew "bat"
 brew "zsh"
 brew "tmux"
 brew "tree"
 brew "eza"
 brew "fd"
+brew "fzf"
 brew "ripgrep"
 brew "htop"
 brew "howdoi"
@@ -25,7 +22,7 @@ brew "jq"
 brew "curl"
 brew "wget"
 brew "rsync"
-
+brew "zoxide"
 
 # ─────────────────────────────────────────
 # Git & Version Control
@@ -35,7 +32,6 @@ brew "git-delta"
 brew "gh"
 brew "lazygit"
 
-
 # ─────────────────────────────────────────
 # Editors & IDE
 # ─────────────────────────────────────────
@@ -43,15 +39,13 @@ brew "neovim"
 cask "visual-studio-code"
 # claude-code (cli): after nvm setup → npm install -g @anthropic-ai/claude-code
 
-
 # ─────────────────────────────────────────
 # Node.js / JavaScript / TypeScript
 # ─────────────────────────────────────────
-brew "nvm"
+# brew "nvm"
 brew "node"
 brew "pnpm"
 brew "yarn"
-
 
 # ─────────────────────────────────────────
 # Python
@@ -62,7 +56,6 @@ brew "python@3.13"
 brew "pipx"   
 brew "uv"
 
-
 # ─────────────────────────────────────────
 # PHP
 # ─────────────────────────────────────────
@@ -70,12 +63,10 @@ brew "php"
 brew "composer"
 brew "php-cs-fixer"
 
-
 # ─────────────────────────────────────────
 # C / C++ / Compilers
 # ─────────────────────────────────────────
 brew "gcc"
-
 
 # ─────────────────────────────────────────
 # Databases
@@ -84,57 +75,71 @@ brew "gcc"
 brew "sqlite"
 cask "pgadmin4"
 
+# ─────────────────────────────────────────
+# Encryption & VPN
+# ─────────────────────────────────────────
+brew "gnupg"
+brew "wireguard-tools"
+cask "gpg-suite"
+cask "mullvad-vpn"
+cask "veracrypt"
 
 # ─────────────────────────────────────────
-# Networking & Security
+# Networking
 # ─────────────────────────────────────────
-brew "dog"
+brew "doggo"
 brew "dnsmasq"
 brew "dnsutils"
-brew "gnupg"
 brew "httpie"
 brew "mtr"
 brew "netcat"
-brew "masscan"
-brew "nmap"
 brew "tcpdump"
-cask "gpg-suite"
-cask "lulu"
-cask "mullvad-vpn"
-cask "wireguard-tools"
-cask "wireshark"
+
+# ─────────────────────────────────────────
+# Security Research
+# ─────────────────────────────────────────
+brew "ffuf"
+brew "gobuster"
+brew "masscan"
+brew "mitmproxy"
+brew "nmap"
+brew "sqlmap"
 cask "burp-suite"
+cask "wireshark-app"
+cask "zap"
+
+# ─────────────────────────────────────────
+# MacOS Security Tools
+# ─────────────────────────────────────────
 cask "blockblock"
+cask "dnsmonitor"
 cask "knockknock"
+cask "lulu"
 cask "oversight"
 cask "reikey"
-cask "dnsmonitor"
 cask "netiquette"
-cask "veracrypt"
-
 
 # ─────────────────────────────────────────
-# Privacy & Browsers
+# Browsers
 # ─────────────────────────────────────────
 cask "brave-browser"
+cask "chromium"
 cask "firefox"
 cask "google-chrome"
 cask "librewolf"
 cask "mullvad-browser"
 cask "tor-browser"
 
-
 # ─────────────────────────────────────────
 # AI & LLMs
 # ─────────────────────────────────────────
 brew "ollama"
 
-
 # ─────────────────────────────────────────
 # Containers & DevOps
 # ─────────────────────────────────────────
-cask "docker"
-
+cask "docker-desktop"
+cask "utm"
 
 # ─────────────────────────────────────────
 # Hardware Stuff
@@ -145,19 +150,19 @@ brew "minicom"
 cask "arduino-ide"
 cask "raspberry-pi-imager"
 
-
 # ─────────────────────────────────────────
 # Media & Creative
 # ─────────────────────────────────────────
+brew "exiftool"
 brew "ffmpeg"
 brew "imagemagick"
+brew "yt-dlp"
 cask "blender"
 cask "figma"
 cask "gimp"
 cask "iina"
 cask "processing"
 cask "vlc"
-
 
 # ─────────────────────────────────────────
 # Communication & Social
@@ -169,7 +174,6 @@ cask "halloy"
 cask "signal"
 cask "soulseek"
 
-
 # ─────────────────────────────────────────
 # Productivity & Knowledge
 # ─────────────────────────────────────────
@@ -178,35 +182,41 @@ cask "libreoffice"
 cask "netnewswire"
 cask "obsidian"
 
-
 # ─────────────────────────────────────────
 # File Management & Utilities
 # ─────────────────────────────────────────
 cask "appcleaner"
 cask "keepassxc"
+cask "syncthing-app"
 cask "rapidapi"
 cask "transmission"
 cask "transmit"
-
 
 # ─────────────────────────────────────────
 # Gaming
 # ─────────────────────────────────────────
 cask "gog-galaxy"
 
-
 # ─────────────────────────────────────────
 # Bitcoin
 # ─────────────────────────────────────────
-brew "bitcoin", restart_service: true
+brew "bitcoin"
 cask "sparrow"
 
+# ─────────────────────────────────────────
+# Cloud
+# ─────────────────────────────────────────
+brew "hcloud"
+brew "rclone"
+brew "ansible"
+brew "opentofu"
+brew "sops"
+brew "age"
 
 # ─────────────────────────────────────────
 # VSCode — Themes & UI
 # ─────────────────────────────────────────
 vscode "github.github-vscode-theme"
-
 
 # ─────────────────────────────────────────
 # VSCode — JavaScript / TypeScript / CSS
@@ -217,52 +227,46 @@ vscode "rvest.vs-code-prettier-eslint"
 vscode "sibiraj-s.vscode-scss-formatter"
 vscode "vue.volar"
 
-
 # ─────────────────────────────────────────
-# VSCode — Python
+# VSCode ~ Python
 # ─────────────────────────────────────────
 vscode "ms-python.python"
 vscode "ms-python.debugpy"
 vscode "ms-python.vscode-pylance"
 vscode "kevinrose.vsc-python-indent"
 
-
 # ─────────────────────────────────────────
-# VSCode — PHP
+# VSCode ~ PHP
 # ─────────────────────────────────────────
 vscode "bmewburn.vscode-intelephense-client"
 vscode "xdebug.php-debug"
 vscode "ikappas.phpcs"
 vscode "ValeryanM.vscode-phpsab"
 
-
 # ─────────────────────────────────────────
-# VSCode — GraphQL & API
+# VSCode ~ GraphQL & API
 # ─────────────────────────────────────────
 vscode "apollographql.vscode-apollo"
 vscode "mquandalle.graphql"
 vscode "orsenkucher.vscode-graphql"
 vscode "humao.rest-client"
 
-
 # ─────────────────────────────────────────
-# VSCode — XML / SVG / Markup
+# VSCode ~ XML / SVG / Markup
 # ─────────────────────────────────────────
 vscode "redhat.vscode-xml"
 vscode "fabianlauer.vs-code-xml-format"
 vscode "jock.svg"
 vscode "wholroyd.jinja"
 
-
 # ─────────────────────────────────────────
-# VSCode — Shaders & Creative Coding
+# VSCode ~ Shaders & Creative Coding
 # ─────────────────────────────────────────
 vscode "slevesque.shader"
 vscode "tobiah.language-pde"
 vscode "luke-zhang-04.processing-vscode"
 
-
 # ─────────────────────────────────────────
-# VSCode — Blockchain / Solidity
+# VSCode ~ Blockchain / Solidity
 # ─────────────────────────────────────────
 vscode "nomicfoundation.hardhat-solidity"
