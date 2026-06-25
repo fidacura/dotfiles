@@ -1,0 +1,31 @@
+[DEFAULT]
+# base settings with progressive banning
+bantime  = 24h
+findtime = 15m
+maxretry = 2
+
+# progressive ban system for repeat offenders
+bantime.increment = true
+bantime.multipliers = 1 3 6 12 24 48
+bantime.maxtime = 4w
+bantime.factor = 1
+
+# basic security settings
+ignoreip = 127.0.0.1/8 ::1
+backend = auto
+usedns = warn
+banaction = iptables-multiport
+protocol = tcp
+chain = INPUT
+
+# [sshd] jail disabled — port 22 is not open on this machine (see iptables rules.v4)
+# re-enable below if you open port 22 and need SSH brute-force protection
+#
+# [sshd]
+# enabled = true
+# port = ssh
+# filter = sshd
+# logpath = /var/log/auth.log
+# maxretry = 2
+# findtime = 10m
+# bantime = 48h

@@ -1,0 +1,178 @@
+# packages.txt — arch linux
+# usage: yay -S --needed $(grep -v '^#' packages.txt | grep -v '^$')
+
+# ─────────────────────────────────────────
+# Terminals
+# ─────────────────────────────────────────
+alacritty
+
+# ─────────────────────────────────────────
+# Shell & Terminal
+# ─────────────────────────────────────────
+zsh
+tmux
+bat
+tree
+eza
+fd
+fzf
+ripgrep
+htop
+just
+jq
+curl
+wget
+rsync
+zoxide
+
+# ─────────────────────────────────────────
+# Git & Version Control
+# ─────────────────────────────────────────
+git
+git-delta
+github-cli
+lazygit
+
+# ─────────────────────────────────────────
+# Editors & IDE
+# ─────────────────────────────────────────
+neovim
+visual-studio-code-bin
+# claude-code (cli): after node setup → npm install -g @anthropic-ai/claude-code
+
+# ─────────────────────────────────────────
+# Node.js / JavaScript / TypeScript
+# ─────────────────────────────────────────
+nodejs
+pnpm
+yarn
+
+# ─────────────────────────────────────────
+# Python
+# ─────────────────────────────────────────
+python
+python-pipx
+uv
+
+# ─────────────────────────────────────────
+# PHP
+# ─────────────────────────────────────────
+php
+composer
+# php-cs-fixer → composer global require friendsofphp/php-cs-fixer
+
+# ─────────────────────────────────────────
+# C / C++ / Compilers
+# ─────────────────────────────────────────
+gcc
+
+# ─────────────────────────────────────────
+# Databases
+# ─────────────────────────────────────────
+sqlite
+
+# ─────────────────────────────────────────
+# Encryption & VPN
+# ─────────────────────────────────────────
+gnupg
+wireguard-tools
+
+# ─────────────────────────────────────────
+# Networking
+# ─────────────────────────────────────────
+doggo
+dnsmasq
+bind
+httpie
+mtr
+openbsd-netcat
+tcpdump
+
+# ─────────────────────────────────────────
+# Security Research
+# ─────────────────────────────────────────
+ffuf
+gobuster
+masscan
+mitmproxy
+nmap
+sqlmap
+wireshark-qt
+
+# ─────────────────────────────────────────
+# Browsers
+# ─────────────────────────────────────────
+brave-bin
+chromium
+firefox
+google-chrome
+librewolf
+mullvad-browser
+torbrowser-launcher
+
+# ─────────────────────────────────────────
+# AI & LLMs
+# ─────────────────────────────────────────
+ollama
+
+# ─────────────────────────────────────────
+# Containers & DevOps
+# ─────────────────────────────────────────
+docker
+docker-compose
+
+# ─────────────────────────────────────────
+# Hardware Stuff
+# ─────────────────────────────────────────
+avrdude
+esptool
+minicom
+
+# ─────────────────────────────────────────
+# Media & Creative
+# ─────────────────────────────────────────
+perl-image-exiftool
+ffmpeg
+imagemagick
+yt-dlp
+blender
+gimp
+vlc
+
+# ─────────────────────────────────────────
+# Communication & Social
+# ─────────────────────────────────────────
+neomutt
+discord
+element-desktop
+signal-desktop
+
+# ─────────────────────────────────────────
+# Productivity & Knowledge
+# ─────────────────────────────────────────
+calibre
+libreoffice-fresh
+obsidian
+
+# ─────────────────────────────────────────
+# File Management & Utilities
+# ─────────────────────────────────────────
+keepassxc
+syncthing
+transmission-cli
+
+# ─────────────────────────────────────────
+# Bitcoin
+# ─────────────────────────────────────────
+bitcoin
+# sparrow → download from https://sparrowwallet.com
+
+# ─────────────────────────────────────────
+# Cloud
+# ─────────────────────────────────────────
+rclone
+ansible
+opentofu
+sops
+age
+hcloud

@@ -1,0 +1,171 @@
+# packages.txt — debian
+# usage: apt-get install -y $(grep -v '^#' packages.txt | grep -v '^$' | tr '\n' ' ')
+
+# ─────────────────────────────────────────
+# Terminals
+# ─────────────────────────────────────────
+alacritty
+
+# ─────────────────────────────────────────
+# Shell & Terminal
+# ─────────────────────────────────────────
+zsh
+tmux
+bat
+tree
+fd-find
+fzf
+ripgrep
+htop
+just
+jq
+curl
+wget
+rsync
+zoxide
+
+# ─────────────────────────────────────────
+# Git & Version Control
+# ─────────────────────────────────────────
+git
+git-delta
+# gh → requires GitHub apt repo: https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+
+# ─────────────────────────────────────────
+# Editors & IDE
+# ─────────────────────────────────────────
+neovim
+# code → requires Microsoft apt repo: https://code.visualstudio.com/docs/setup/linux
+# claude-code (cli): after node setup → npm install -g @anthropic-ai/claude-code
+
+# ─────────────────────────────────────────
+# Node.js / JavaScript / TypeScript
+# ─────────────────────────────────────────
+nodejs
+npm
+# pnpm → npm install -g pnpm
+# yarn → npm install -g yarn
+
+# ─────────────────────────────────────────
+# Python
+# ─────────────────────────────────────────
+python3
+python3-pip
+python3-venv
+pipx
+
+# ─────────────────────────────────────────
+# PHP
+# ─────────────────────────────────────────
+php
+composer
+# php-cs-fixer → composer global require friendsofphp/php-cs-fixer
+
+# ─────────────────────────────────────────
+# C / C++ / Compilers
+# ─────────────────────────────────────────
+gcc
+build-essential
+
+# ─────────────────────────────────────────
+# Databases
+# ─────────────────────────────────────────
+sqlite3
+
+# ─────────────────────────────────────────
+# Encryption & VPN
+# ─────────────────────────────────────────
+gnupg
+wireguard
+
+# ─────────────────────────────────────────
+# Networking
+# ─────────────────────────────────────────
+dnsmasq
+dnsutils
+httpie
+mtr
+netcat-openbsd
+tcpdump
+
+# ─────────────────────────────────────────
+# Security Research
+# ─────────────────────────────────────────
+masscan
+mitmproxy
+nmap
+sqlmap
+wireshark
+
+# ─────────────────────────────────────────
+# Browsers
+# ─────────────────────────────────────────
+chromium
+firefox-esr
+torbrowser-launcher
+
+# ─────────────────────────────────────────
+# Containers & DevOps
+# ─────────────────────────────────────────
+docker.io
+docker-compose
+# docker-ce → use Docker's official apt repo for latest: https://docs.docker.com/engine/install/debian
+
+# ─────────────────────────────────────────
+# Hardware Stuff
+# ─────────────────────────────────────────
+avrdude
+esptool
+minicom
+
+# ─────────────────────────────────────────
+# Media & Creative
+# ─────────────────────────────────────────
+libimage-exiftool-perl
+ffmpeg
+imagemagick
+yt-dlp
+blender
+gimp
+vlc
+
+# ─────────────────────────────────────────
+# Communication & Social
+# ─────────────────────────────────────────
+neomutt
+
+# ─────────────────────────────────────────
+# Productivity & Knowledge
+# ─────────────────────────────────────────
+calibre
+libreoffice
+
+# ─────────────────────────────────────────
+# Security & Privacy
+# ─────────────────────────────────────────
+fail2ban
+rkhunter
+chkrootkit
+lynis
+whowatch
+
+# ─────────────────────────────────────────
+# File Management & Utilities
+# ─────────────────────────────────────────
+keepassxc
+# syncthing → not in Debian Bookworm main; add repo first: https://apt.syncthing.net
+syncthing
+transmission-cli
+
+# ─────────────────────────────────────────
+# Bitcoin
+# ─────────────────────────────────────────
+bitcoind
+# sparrow → download from https://sparrowwallet.com
+
+# ─────────────────────────────────────────
+# Cloud
+# ─────────────────────────────────────────
+rclone
+ansible
+age
