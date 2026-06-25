@@ -23,8 +23,25 @@ fi
 TYPE="$1"
 NAME="$2"
 
+# validate project name — must be safe for package manifests and sed replacements
+if [[ ! "$NAME" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+    echo "❌ Invalid project name: '$NAME'"
+    echo "💡 Use only letters, numbers, hyphens, underscores, and dots"
+    exit 1
+fi
+
 # github username
 GITHUB_USER="fidacura"
+
+# cross-platform in-place sed: BSD sed (macOS) requires an empty-string argument
+# after -i; GNU sed (Linux) does not accept it
+_sed_i() {
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        sed -i '' "$@"
+    else
+        sed -i "$@"
+    fi
+}
 
 # template repository urls
 declare -A TEMPLATES=(
@@ -82,27 +99,27 @@ if git clone "$TEMPLATE_URL" "$NAME"; then
             jq --arg name "$NAME" '.name = $name' package.json > package.json.tmp && mv package.json.tmp package.json
         else
             # fallback without jq
-            sed -i.bak "s/\"name\": \".*\"/\"name\": \"$NAME\"/" package.json && rm package.json.bak
+            _sed_i "s/\"name\": \".*\"/\"name\": \"$NAME\"/" package.json
         fi
         echo "  ✅ Updated package.json"
     fi
     
     # Update cargo.toml name (if it exists)
     if [[ -f "Cargo.toml" ]]; then
-        sed -i.bak "s/name = \".*\"/name = \"$NAME\"/" Cargo.toml && rm Cargo.toml.bak
+        _sed_i "s/name = \".*\"/name = \"$NAME\"/" Cargo.toml
         echo "  ✅ Updated Cargo.toml"
     fi
     
     # update pyproject.toml (if it exists)
     if [[ -f "pyproject.toml" ]]; then
-        sed -i.bak "s/name = \".*\"/name = \"$NAME\"/" pyproject.toml && rm pyproject.toml.bak
+        _sed_i "s/name = \".*\"/name = \"$NAME\"/" pyproject.toml
         echo "  ✅ Updated pyproject.toml"
     fi
     
     # update README.md title (if it exists)
     if [[ -f "README.md" ]]; then
         # Replace first h1 heading with project name
-        sed -i.bak "1s/^# .*/# $NAME/" README.md && rm README.md.bak
+        _sed_i "1s/^# .*/# $NAME/" README.md
         echo "  ✅ Updated README.md"
     fi
     
