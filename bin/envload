@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# must be sourced, not executed — the whole point is exporting into your CURRENT shell
-# usage: source envload [FILE]   (defaults to .env)
 
 if [[ ${BASH_SOURCE[0]:-$0} == "$0" ]]; then
   echo "envload: must be sourced, not executed — try: source envload [FILE]" 1>&2

@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 
-"""
-Write and run a command with your favorite editor
-"""
-
 import os, subprocess, sys, tempfile
 
 def die(msg='', code=1):
