@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+extensions=(flac wav aiff aif m4a aac ogg wma alac ape)
+
+files=()
+
+for arg in "$@"; do
+  if [[ -d $arg ]]; then
+    pattern=()
+    for ext in "${extensions[@]}"; do
+      pattern+=(-iname "*.$ext" -o)
+    done
+    unset 'pattern[-1]'
+
+    mapfile -d '' found < <(find "$arg" -type f \( "${pattern[@]}" \) -print0 | sort -z)
+    files+=("${found[@]}")
+  elif [[ -f $arg ]]; then
+    files+=("$arg")
+  else
+    echo "mp3: not a file or directory: $arg" 1>&2
+    exit 1
+  fi
+done
+
+for i in "${!files[@]}"; do
+  file="${files[$i]}"
+
+  echo -n "[$((i+1))/${#files[@]}] ${file##*/}... "
+
+  ffmpeg -hide_banner -loglevel error -y \
+    -i "$file" \
+    -codec:a libmp3lame \
+    -q:a 0 \
+    -map_metadata 0 \
+    -id3v2_version 3 \
+    -write_id3v1 1 \
+    "${file%.*}.mp3"
+
+  echo '✅'
+done

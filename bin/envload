@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# must be sourced, not executed — the whole point is exporting into your CURRENT shell
+# usage: source envload [FILE]   (defaults to .env)
+
+if [[ ${BASH_SOURCE[0]:-$0} == "$0" ]]; then
+  echo "envload: must be sourced, not executed — try: source envload [FILE]" 1>&2
+  exit 1
+fi
+
+file=${1:-.env}
+
+if [[ ! -f $file ]]; then
+  echo "envload: not found: $file" 1>&2
+  return 1
+fi
+
+set -a
+source "$file"
+set +a

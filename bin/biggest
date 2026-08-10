@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+dir=${1:-.}
+count=${2:-20}
+
+du -ah "$dir" 2>/dev/null | sort -rh | head -n "$count"

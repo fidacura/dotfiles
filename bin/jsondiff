@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [[ $# -ne 2 ]]; then
+  echo "usage: jsondiff FILE1 FILE2" 1>&2
+  exit 1
+fi
+
+diff -u <(jq -S . "$1") <(jq -S . "$2")

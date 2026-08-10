@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [[ $# -ne 1 ]]; then
+  echo "usage: killport PORT" 1>&2
+  exit 1
+fi
+
+port=$1
+
+pids=$(lsof -iTCP:"$port" -sTCP:LISTEN -t -n -P || true)
+
+if [[ -z $pids ]]; then
+  echo "killport: nothing listening on port $port" 1>&2
+  exit 1
+fi
+
+echo "$pids" | xargs kill
+
+echo "killed: $(echo "$pids" | tr '\n' ' ')"

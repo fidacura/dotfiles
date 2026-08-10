@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+dir=${1:-.}
+
+find "$dir" -type f -exec sha256sum {} + | sort | uniq -w64 --all-repeated=separate
