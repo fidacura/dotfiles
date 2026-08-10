@@ -1,10 +1,25 @@
 #!/bin/bash
 
-echo "🍎 Setting macOS defaults for development environment..."
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+info()    { echo -e "${BLUE}$1${NC}"; }
+ok()      { echo -e "${GREEN}$1${NC}"; }
+warn()    { echo -e "${YELLOW}$1${NC}"; }
+err()     { echo -e "${RED}$1${NC}"; }
+section() { echo -e "\n${BOLD}${BLUE}-- $1 --${NC}"; }
+
+info "setting macos defaults for development environment..."
 
 # ================================================================
 # system behaviour
 # ================================================================
+
+section "system behaviour"
 
 # disable startup sound
 sudo nvram SystemAudioVolume=" "
@@ -24,6 +39,8 @@ sudo systemsetup -setrestartfreeze on
 # ================================================================
 # keyboard and input
 # ================================================================
+
+section "keyboard and input"
 
 # set blazingly fast keyboard repeat rate
 defaults write NSGlobalDomain KeyRepeat -int 1
@@ -48,6 +65,8 @@ defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 # TRACKPAD AND MOUSE
 # ================================================================
 
+section "trackpad and mouse"
+
 # trackpad: enable tap to click for this user and for the login screen
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
@@ -63,6 +82,8 @@ defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int
 # ================================================================
 # SCREEN AND DISPLAY
 # ================================================================
+
+section "screen and display"
 
 # require password immediately after sleep or screen saver begins
 defaults write com.apple.screensaver askForPassword -int 1
@@ -83,5 +104,5 @@ defaults write NSGlobalDomain AppleFontSmoothing -int 1
 # enable hidpi display modes (requires restart)
 sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true
 
-echo "✅ macOS defaults set successfully"
-echo "💡 Some changes require a restart to take effect"
+ok "macos defaults set successfully"
+info "some changes require a restart to take effect"

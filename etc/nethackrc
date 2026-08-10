@@ -1,6 +1,6 @@
 # ~/.nethackrc
 
-# strategic control settings - disable automation for tactical awareness
+# strategic control settings ~ disable automation for tactical awareness
 OPTIONS=!autopickup          # manual item selection prevents inventory clutter
 OPTIONS=!autoquiver          # deliberate ammunition management for combat strategy
 OPTIONS=!cmdassist           # direct command input for experienced players

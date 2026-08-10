@@ -173,7 +173,9 @@
 # ================================================================
 
 [credential]
-	helper = osxkeychain 
+	# selects the platform-appropriate credential store at runtime:
+	# osxkeychain on macOS, libsecret on Linux (falls back to no caching)
+	helper = !f() { case "$(uname -s)" in Darwin) git credential-osxkeychain "$@";; Linux) git-credential-libsecret "$@" 2>/dev/null || true;; esac; }; f
 
 # ================================================================
 # performance optimizations

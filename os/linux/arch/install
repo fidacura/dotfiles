@@ -4,21 +4,23 @@ set -euo pipefail
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
-BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+BOLD='\033[1m'
 NC='\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-log()     { echo -e "${BLUE}[$(date +'%H:%M:%S')]${NC} $1"; }
-success() { echo -e "${GREEN}✓${NC} $1"; }
-error()   { echo -e "${RED}✗${NC} $1"; exit 1; }
-warn()    { echo -e "${YELLOW}⚠${NC} $1"; }
+info()    { echo -e "${BLUE}$1${NC}"; }
+ok()      { echo -e "${GREEN}$1${NC}"; }
+warn()    { echo -e "${YELLOW}$1${NC}"; }
+err()     { echo -e "${RED}$1${NC}"; }
+section() { echo -e "\n${BOLD}${BLUE}-- $1 --${NC}"; }
 
 update_system() {
-    log "Updating system packages..."
+    section "updating system packages"
     sudo pacman -Syu --noconfirm
-    success "System updated"
+    ok "system updated"
 }
 
 detect_aur_helper() {
@@ -32,17 +34,18 @@ detect_aur_helper() {
 }
 
 install_packages() {
-    log "Installing packages from packages.txt..."
+    section "installing packages"
 
     if [[ ! -f "$SCRIPT_DIR/packages.txt" ]]; then
-        error "packages.txt not found at $SCRIPT_DIR/packages.txt"
+        err "packages.txt not found at $SCRIPT_DIR/packages.txt"
+        exit 1
     fi
 
     local packages
     mapfile -t packages < <(grep -v '^#' "$SCRIPT_DIR/packages.txt" | grep -v '^$')
 
     if [[ ${#packages[@]} -eq 0 ]]; then
-        warn "No packages found in packages.txt"
+        warn "no packages found in packages.txt"
         return
     fi
 
@@ -50,52 +53,52 @@ install_packages() {
     aur_helper="$(detect_aur_helper)"
 
     if [[ -n "$aur_helper" ]]; then
-        log "AUR helper found: $aur_helper — installing all ${#packages[@]} packages..."
+        info "aur helper found: $aur_helper — installing all ${#packages[@]} packages..."
         "$aur_helper" -S --needed --noconfirm "${packages[@]}" || {
-            warn "Some packages failed to install - continuing anyway"
+            warn "some packages failed to install - continuing anyway"
         }
     else
-        warn "No AUR helper found (yay/paru). Installing official packages only via pacman."
-        warn "AUR packages (e.g. visual-studio-code-bin, brave-bin) will be skipped silently."
-        warn "Install an AUR helper first: https://github.com/Jguer/yay"
+        warn "no aur helper found (yay/paru). installing official packages only via pacman."
+        warn "aur packages (e.g. visual-studio-code-bin, brave-bin) will be skipped silently."
+        warn "install an aur helper first: https://github.com/Jguer/yay"
         sudo pacman -S --needed --noconfirm "${packages[@]}" 2>/dev/null || {
-            warn "Some packages failed (likely AUR-only) - continuing anyway"
+            warn "some packages failed (likely aur-only) - continuing anyway"
         }
     fi
 
-    success "Package installation completed"
+    ok "package installation completed"
 }
 
 optimize_system() {
-    log "Applying system optimizations..."
+    section "applying system optimizations"
 
     # enable parallel downloads in pacman
     if ! grep -q "^ParallelDownloads" /etc/pacman.conf; then
         sudo sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 10/' /etc/pacman.conf
-        success "Pacman parallel downloads enabled"
+        ok "pacman parallel downloads enabled"
     fi
 
     # enable color in pacman
     if ! grep -q "^Color" /etc/pacman.conf; then
         sudo sed -i 's/#Color/Color/' /etc/pacman.conf
-        success "Pacman color output enabled"
+        ok "pacman color output enabled"
     fi
 
     # enable trim for ssd
     sudo systemctl enable fstrim.timer
-    success "SSD trim timer enabled"
+    ok "ssd trim timer enabled"
 
-    success "System optimizations applied"
+    ok "system optimizations applied"
 }
 
 setup_directories() {
-    log "Creating user directories..."
+    section "creating user directories"
     mkdir -p ~/scripts ~/projects ~/downloads
-    success "User directories created"
+    ok "user directories created"
 }
 
 main() {
-    echo -e "${BLUE}"
+    echo -e "${BOLD}${BLUE}"
     echo "=================================="
     echo "   Arch Linux Post-Install Setup  "
     echo "=================================="
@@ -119,12 +122,12 @@ main() {
     optimize_system
     setup_directories
 
+    section "done"
+    ok "arch linux setup completed"
     echo
-    success "Arch Linux setup completed!"
-    echo
-    echo "Next steps:"
-    echo "• Run 'os/linux/wireguard' to configure VPN"
-    echo "• Reboot to ensure all changes take effect"
+    echo "next steps:"
+    echo "• run 'os/linux/wireguard' to configure vpn"
+    echo "• reboot to ensure all changes take effect"
 }
 
 main "$@"

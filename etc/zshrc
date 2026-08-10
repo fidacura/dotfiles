@@ -1,53 +1,432 @@
 # ~/.zshrc
+# =============================================================================
+#  homebrew ~ sets up PATH for everything below
+# =============================================================================
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# core zsh options and behavior
-setopt auto_remove_slash          # remove trailing slash from completions
-setopt hist_expire_dups_first     # expire duplicate history entries first
-setopt hist_ignore_dups           # don't save duplicate history entries
-setopt hist_ignore_space          # ignore commands starting with space
-setopt inc_append_history         # save history immediately
-setopt interactive_comments       # allow comments in interactive mode
-setopt prompt_subst               # enable prompt substitution
-setopt share_history              # share history between sessions
+# =============================================================================
+# -------------------------------- path ---------------------------------------
+# =============================================================================
+# -- prepends --
+export PATH="$HOME/.npm-global/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
-# disable unwanted options
-unsetopt beep                     # never beep
-unsetopt correct                  # don't correct command spelling
+# -- apps --
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
 
-# history configuration
-export HISTFILE=~/.zsh_history
-export HISTSIZE=50000
-export SAVEHIST=50000
+# -- node/nvm --
+export NVM_DIR="$HOME/.nvm"
+source "$(brew --prefix nvm)/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-# environment setup
-export EDITOR="vim"
-export VISUAL="vim"
-export PAGER="less"
-export LANG="en_US.UTF-8"
-export KEYTIMEOUT=1               # faster mode switching
+# -- personal --
+export BACKUP_FOLDER="$HOME/backup"
+export PATH="$HOME/.bin:$PATH"
 
-# macos specific initialization - moved before other sources
+# =============================================================================
+# ---------------------------- env & history ----------------------------------
+# =============================================================================
+# --- terminal / tools ---
+export CLICOLOR=1
+export LSCOLORS="ExGxFxdxCxegedabagacad"    # BSD ls (mostly moot now that ls=eza)
+export EZA_COLORS="da=37:uu=37:xx=37"       # eza: date, user, punctuation = white
+export VIRTUAL_ENV_DISABLE_PROMPT=1         # let the prompt draw venv, not Python
+
+# --- history ---
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+setopt SHARE_HISTORY                        # share history across tabs instantly
+setopt HIST_IGNORE_ALL_DUPS                 # no duplicate entries
+setopt HIST_IGNORE_SPACE                    # leading space hides a command from history
+setopt HIST_REDUCE_BLANKS                   # trim surplus whitespace
+setopt EXTENDED_HISTORY                     # timestamps
+setopt INC_APPEND_HISTORY                   # write as you go
+
+# =============================================================================
+# ------------------------------ completion -----------------------------------
+# =============================================================================
+mkdir -p ~/.zsh/cache
+autoload -Uz compinit
+compinit -C                                 # -C skips the slow security scan
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
+zstyle ':completion:*:messages' format '%F{blue}%d%f'
+
+# ---  caching --- 
+zstyle ':completion:*' use-cache yes
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+# --- command-specific ---
+zstyle ':completion:*:processes' command 'ps -u $USER -o pid,user,comm -w -w'
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*' force-list always
+
+# =============================================================================
+# -------------------------------- aliases ------------------------------------
+# =============================================================================
+
+# --- navigation ---
+alias ~="cd ~"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias -- -='cd -'
+
+# --- listing (eza) ---
+alias ls='eza --icons --group-directories-first'
+alias l='eza -F --icons --group-directories-first'
+alias ll='eza -lh --icons --group-directories-first'
+alias la='eza -lah --icons --group-directories-first'
+alias lr='eza -R --icons --group-directories-first'
+alias lt='eza -T --icons --group-directories-first'
+alias lf="ls -A | grep"                
+alias lc="find . -type f | wc -l"      
+alias ld='eza -lD --icons'            
+alias lsd='eza -lD --icons'
+
+# --- system / misc ---
+alias c="clear"
+alias s="sudo"
+alias x="exit"
+alias grep="grep --color=auto"
+alias follow="tail -f -n +1"
+alias biggest="du -h -d 1 | sort -h"
+alias psg="ps aux | grep"
+
+# --- brew / system ---
+alias upgrade='brew update && brew upgrade && brew cleanup'
+alias outdated='brew outdated'     
+
+# --- files & directories (size / find) ---
+alias dud='du -d 1 -h'                 # size of each item here
+alias duf='du -sh *'                   # total size of current dir
+alias ff='find . -type f -name'        # find file by name: ff <name>
+
+# --- history ---
+alias h='history'
+alias hc="history -c"
+alias hg="history | grep "
+alias h-search='fc -El 0 | grep'
+alias histrg='history -500 | rg'
+alias top-history="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
+
+# --- git ---
+# --- git: core / status / diff ---
+alias g="git"           ; alias gs="git status"     ; alias gss="git status -s"
+alias gd="git diff"     ; alias gds="git diff --staged"
+# --- git: stage & commit ---
+alias ga="git add"      ; alias gaa="git add ."     ; alias gap="git add -p"
+alias gc="git commit"   ; alias gcm="git commit -m" ; alias gca="git commit --amend"
+alias gcan="git commit --amend --no-edit"
+# --- git: branch & checkout ---
+alias gb="git branch"   ; alias gbd="git branch -d" ; alias gba="git branch -a"
+alias gch="git checkout"; alias gcb="git checkout -b"; alias gsw="git switch"
+# --- git: sync ---
+alias gps="git push"    ; alias gpl="git pull"      ; alias gf="git fetch"
+# --- git: log ---
+alias gl="git log"      ; alias glo="git log --oneline"
+alias glg="git log --oneline --graph --decorate --all"
+alias gls="git log --stat"
+# --- git: stash ---
+alias gst="git stash"   ; alias gstp="git stash pop"; alias gstl="git stash list"
+# --- git: undo & reset ---
+alias grh="git reset --hard"; alias grs="git reset --soft HEAD~1"; alias gundo="git reset --soft HEAD~1"
+alias grst="git restore"    ; alias grss="git restore --staged"
+# --- git: rebase & merge ---
+alias grb="git rebase"  ; alias grbi="git rebase -i"; alias grbc="git rebase --continue"
+alias gm="git merge"
+
+# --- network ---
+alias p1="ping 1.1.1.1"
+alias p6='ping -6 2606:4700:4700::1111'
+alias p8="ping 8.8.8.8"
+
+# --- neovim ---
+alias v='nvim'
+alias nv='nvim'
+alias mutt="neomutt"
+alias nvconfig='nvim ~/.config/nvim'
+alias nvmail='nvim -c "set ft=mail"'
+alias nvproj='nvim -c "Telescope find_files"'
+alias nvrecent='nvim -c "Telescope oldfiles"'
+alias nvkeys='nvim ~/.config/nvim/lua/keymaps.lua'
+alias nvplug='nvim ~/.config/nvim/lua/plugins.lua'
+alias compose='nvim -c "set ft=mail" /tmp/compose_$(date +%s).mail'
+
+# --- python ---
+alias python='python3'
+alias pip='pip3'
+
+# --- yarn: project ---
+alias ys='yarn start'   ; alias yt='yarn test'    ; alias yb='yarn build'
+alias yl='yarn lint'    ; alias yd='yarn dev'     ; alias yp='yarn publish'
+alias yr='yarn run'
+# --- yarn: packages ---
+alias ya='yarn add'     ; alias ye='yarn remove'  ; alias yi='yarn install'
+alias yg='yarn upgrade' ; alias yu='yarn update'  ; alias yf='yarn info'
+# --- yarn: misc ---
+alias yz='yarn audit'   ; alias yc='yarn autoclean'; alias yk='yarn check'
+alias yh='yarn help'
+# --- npm (older projects) ---
+alias ni='npm install'  ; alias nu='npm uninstall'; alias nr='npm run'
+alias ns='npm start'    ; alias nt='npm test'     ; alias nl='npm run lint'
+alias nd='npm run dev'  ; alias np='npm publish'
+# --- nvm ---
+alias nvmi='nvm install'; alias nvmu='nvm use'    ; alias nvml='nvm ls'
+alias nvmr='nvm run'    ; alias nvme='nvm exec'   ; alias nvmw='nvm which'
+alias nvmlr='nvm ls-remote'
+alias nvmlts='nvm install --lts && nvm use --lts'
+alias nvmlatest='nvm install node --latest-npm && nvm use node'
+
+# --- extra tool aliases ---
+# alias c="composer"
+alias nmap="grc nmap"
+
+# =============================================================================
+# ------------------------------- functions -----------------------------------
+# =============================================================================
+
+# make a directory (incl. parents) and cd into it
+mkcd() {
+  local dir="$*"
+  mkdir -p "$dir" && cd "$dir"
+}
+
+# make destination dir if needed, then copy:  mkcp <src...> <dest>
+mkcp() {
+  local dir="$2"
+  local tmp="$2"; tmp="${tmp: -1}"
+  [ "$tmp" != "/" ] && dir="$(dirname "$2")"
+  [ -d "$dir" ] ||
+    mkdir -p "$dir" &&
+    cp -r "$@"
+}
+
+# make destination dir if needed, then move:  mkmv <src...> <dest>
+mkmv() {
+  local dir="$2"
+  local tmp="$2"; tmp="${tmp: -1}"
+  [ "$tmp" != "/" ] && dir="$(dirname "$2")"
+  [ -d "$dir" ] ||
+    mkdir -p "$dir" &&
+    mv "$@"
+}
+
+# =============================================================================
+# ------------------------------- clipboard -----------------------------------
+# =============================================================================
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    # nix package manager path - critical to be first
-    export PATH=$HOME/.nix-profile/bin:$PATH
-    
-    # nix darwin static config
-    if [ -e '/etc/static/zshrc' ]; then
-        source '/etc/static/zshrc'
-    fi
-    
-    # homebrew setup
-    if [[ -f "/opt/homebrew/bin/brew" ]]; then
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    fi
+  set-system-clipboard() { pbcopy }
+  get-system-clipboard() { pbpaste }
+  set-system-selection() { pbcopy }
+  get-system-selection() { pbpaste }
+else
+  if command -v xclip >/dev/null 2>&1; then
+    set-system-clipboard() { xclip -selection clipboard -in }
+    get-system-clipboard() { xclip -selection clipboard -out }
+    set-system-selection() { xclip -selection primary -in }
+    get-system-selection() { xclip -selection primary -out }
+  elif command -v xsel >/dev/null 2>&1; then
+    set-system-clipboard() { xsel --clipboard --input }
+    get-system-clipboard() { xsel --clipboard --output }
+    set-system-selection() { xsel --primary --input }
+    get-system-selection() { xsel --primary --output }
+  else
+    set-system-clipboard() { CUTBUFFER=$(cat) }
+    get-system-clipboard() { echo $CUTBUFFER }
+    set-system-selection() { CUTBUFFER=$(cat) }
+    get-system-selection() { echo $CUTBUFFER }
+  fi
 fi
 
-# load modular components in proper order
-source ~/.config/zsh/exports.zsh      # environment variables and path
-source ~/.config/zsh/functions.zsh    # custom functions (corrected)
-source ~/.config/zsh/plugins.zsh      # external plugins (corrected)
-source ~/.config/zsh/completion.zsh   # completion setup
-source ~/.config/zsh/keybindings.zsh  # key mappings
-source ~/.config/zsh/aliases.zsh      # command aliases
-source ~/.config/zsh/clipboard.zsh    # clipboard integration
-source ~/.config/zsh/prompt.zsh       # prompt configuration
+zle -N kill-line-to-system-clipboard
+kill-line-to-system-clipboard() {
+  zle kill-line
+  print -rn -- "$CUTBUFFER" | set-system-clipboard
+}
+
+zle -N yank-from-system-clipboard
+yank-from-system-clipboard() {
+  CUTBUFFER=$(get-system-clipboard)
+  zle yank
+}
+
+zle -N kill-line-to-x-selection
+kill-line-to-x-selection() {
+  zle kill-line
+  print -rn -- "$CUTBUFFER" | set-system-selection
+}
+
+zle -N yank-from-x-selection
+yank-from-x-selection() {
+  CUTBUFFER=$(get-system-selection)
+  zle yank
+}
+
+# =============================================================================
+# ------------------------------ keybindings ----------------------------------
+# =============================================================================
+bindkey -v
+
+# --- history search --- 
+bindkey '^R' history-incremental-search-backward   # fzf overrides this later
+bindkey '^S' history-incremental-search-forward
+bindkey '^P' up-history
+bindkey '^N' down-history
+
+# --- line editing --- 
+bindkey '^A' beginning-of-line
+bindkey '^E' end-of-line
+bindkey '^K' kill-line
+bindkey '^U' kill-whole-line
+bindkey '^W' backward-kill-word
+bindkey '^?' backward-delete-char
+
+# ---  clipboard (widgets from section 9) --- 
+bindkey '^Y' yank-from-system-clipboard
+bindkey '\ey' yank-from-system-clipboard
+bindkey '\ek' kill-line-to-system-clipboard
+
+# --- word movement --- 
+bindkey '\eb' backward-word
+bindkey '\ef' forward-word
+
+# --- magic space --- 
+bindkey ' ' magic-space    # expands !! history as you type
+
+# =============================================================================
+# --------------------------------- prompt ------------------------------------
+# =============================================================================
+# --- palette: swap the active host block per machine ---
+_PROMPT_FG="#ffffff"
+# ---- localhost ----
+_PROMPT_HOST="#085041"; _PROMPT_PATH="#5f5e5a"; _PROMPT_GIT="#ba7517"; _PROMPT_DIRTY="#ba7517"
+# ---- vps-bureau ----
+# _PROMPT_HOST="#185fa5"; _PROMPT_PATH="#5f5e5a"; _PROMPT_GIT="#3b6d11"; _PROMPT_DIRTY="#c19c00"
+# ---- vps-cyber ----
+# _PROMPT_HOST="#993c1d"; _PROMPT_PATH="#5f5e5a"; _PROMPT_GIT="#3b6d11"; _PROMPT_DIRTY="#d4537e"
+# ---- vps-fidacura ----
+# _PROMPT_HOST="#534ab7"; _PROMPT_PATH="#5f5e5a"; _PROMPT_GIT="#1d9e75"; _PROMPT_DIRTY="#d4537e"
+
+_PROMPT_VENV="#5a4a86"     # python venv
+_PROMPT_OK="#5fff00"       # success arrow
+_PROMPT_ERR="#ff0000"      # error arrow / exit code
+_PROMPT_MUTED="#888780"    # duration + simple prompt text
+
+# --- glyphs (real chars so copy-paste can't drop them) ---
+_PL=$'\ue0b0'            # powerline chevron
+_IC_FOLDER=$'\uf07b'     # folder (currently unused; available)
+_IC_BRANCH=$'\ue725'     # git branch
+_IC_PYTHON=$'\ue73c'     # python
+_IC_TIMER=$'\uf252'      # hourglass
+
+parse_git_branch() { git branch 2>/dev/null | grep '^\*' | sed 's/\* //'; }
+
+# --- path: full if shallow, ~/…/last-two if deeper than 4 ---
+_prompt_pwd() { print -rn -- "${(%):-%(4~|~/…/%2~|%~)}"; }
+
+# --- timing + exit status ---
+preexec() { _PROMPT_START=$SECONDS }
+precmd() {
+  _PROMPT_STATUS=$?
+  if [[ -n "$_PROMPT_START" ]]; then
+    _PROMPT_DUR=$(( SECONDS - _PROMPT_START )); unset _PROMPT_START
+  else
+    _PROMPT_DUR=0
+  fi
+}
+
+# --- top line: powerline segments chained so chevrons blend ---
+_prompt_topline() {
+  local -a bg txt
+  bg+=("$_PROMPT_HOST"); txt+=(" fi@%m ")
+  bg+=("$_PROMPT_PATH"); txt+=(" $(_prompt_pwd) ")   # add ${_IC_FOLDER} here for a folder icon
+
+  [[ -n "$VIRTUAL_ENV" ]] && { bg+=("$_PROMPT_VENV"); txt+=(" ${_IC_PYTHON} ${VIRTUAL_ENV:t} "); }
+
+  local b=$(parse_git_branch)
+  if [[ -n "$b" ]]; then
+    local d="" gbg=$_PROMPT_GIT
+    [[ -n $(git status --porcelain 2>/dev/null) ]] && { d="*"; gbg=$_PROMPT_DIRTY; }
+    bg+=("$gbg"); txt+=(" ${_IC_BRANCH} ${b}${d} ")
+  fi
+
+  local out="" prev="" i
+  for (( i=1; i<=${#bg}; i++ )); do
+    if [[ -z "$prev" ]]; then
+      out+="%K{${bg[i]}}%F{$_PROMPT_FG}${txt[i]}"
+    else
+      out+="%F{$prev}%K{${bg[i]}}${_PL}%F{$_PROMPT_FG}${txt[i]}"
+    fi
+    prev="${bg[i]}"
+  done
+  out+="%k%F{$prev}${_PL}%f"
+  print -Pn "$out"
+}
+
+# --- input line: optional duration, then arrow (green ok / red ✘ + code) ---
+_prompt_char() {
+  local out=""
+  (( _PROMPT_DUR > 5 )) && out+="%F{$_PROMPT_MUTED}${_IC_TIMER} ${_PROMPT_DUR}s  %f"
+  if [[ $_PROMPT_STATUS -eq 0 || $_PROMPT_STATUS -eq 130 ]]; then
+    out+="%F{$_PROMPT_OK}→%f"
+  else
+    out+="%F{$_PROMPT_ERR}✘ ${_PROMPT_STATUS}%f"
+  fi
+  print -Pn "$out"
+}
+
+# --- alternate: simple two-line prompt (no powerline) ---
+_prompt_simple_line() {
+  local b=$(parse_git_branch) out
+  out="%F{$_PROMPT_MUTED}fi at %F{#85b7eb}%m%F{$_PROMPT_MUTED} in %F{#97c459}$(_prompt_pwd)"
+  if [[ -n "$b" ]]; then
+    local d=""; [[ -n $(git status --porcelain 2>/dev/null) ]] && d="*"
+    out+="%F{$_PROMPT_MUTED} on %F{#ef9f27}${b}${d}"
+  fi
+  print -Pn "$out%f"
+}
+_prompt_simple_char() { [[ $_PROMPT_STATUS -eq 0 ]] && print -Pn "%F{$_PROMPT_OK}→%f" || print -Pn "%F{$_PROMPT_ERR}→%f"; }
+
+# --- prompt: fatty ---
+setopt PROMPT_SUBST
+PROMPT_POWERLINE='$(_prompt_topline)
+$(_prompt_char) '
+# PROMPT=$PROMPT_POWERLINE
+
+# --- prompt: simple ---
+PROMPT_SIMPLE='$(_prompt_simple_line)
+$(_prompt_simple_char) '
+PROMPT=$PROMPT_SIMPLE
+
+# =============================================================================
+# ---------------------------- plugins & tools --------------------------------
+# =============================================================================
+#  plugins & tools (order-sensitive ~ keep the sequence);
+#  zoxide → fzf(owns ^R) → autosuggest → highlight(last) → substring(after)
+# =============================================================================
+# --- zoxide (smart `z` directory jumping) --- 
+eval "$(zoxide init zsh)"                                   
+
+# ---  fzf (fuzzy Ctrl+R history + Ctrl+T file search) --- 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh    # fuzzy Ctrl+R / Ctrl+T
+
+# --- autosuggestions ~ (greyed-out history hint; → to accept) --- 
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#5f5e5a'
+
+# --- syntax highlighting ~ (green = valid command, red = typo) --- 
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+bindkey '^[[A' history-substring-search-up      # ↑
+bindkey '^[[B' history-substring-search-down    # ↓
+bindkey -M vicmd 'k' history-substring-search-up    # vi mode: k
+bindkey -M vicmd 'j' history-substring-search-down  # vi mode: j

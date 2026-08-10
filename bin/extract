@@ -1,38 +1,37 @@
 #!/usr/bin/env bash
-# universal archive extraction utility 
-# Usage: extract <archive-file>
 
 set -euo pipefail
 
 if [[ $# -ne 1 ]]; then
-    echo "Usage: extract <archive-file>"
-    echo "Supports: tar.gz, tar.bz2, tar.xz, zip, rar, 7z, gz, bz2"
-    exit 1
+  echo "usage: extract ARCHIVE" 1>&2
+  echo "supports: tar, tar.gz, tar.bz2, tar.xz, zip, rar, 7z, gz, bz2, Z" 1>&2
+  exit 1
 fi
 
-FILE="$1"
+file=$1
 
-if [[ ! -f "$FILE" ]]; then
-    echo "❌ File not found: $FILE"
-    exit 1
+if [[ ! -f $file ]]; then
+  echo "extract: file not found: $file" 1>&2
+  exit 1
 fi
 
-echo "📦 Extracting: $FILE"
+echo "extracting: $file"
 
-case "$FILE" in
-    *.tar.bz2)   tar xjf "$FILE"     ;;
-    *.tar.gz)    tar xzf "$FILE"     ;;
-    *.tar.xz)    tar xJf "$FILE"     ;;
-    *.bz2)       bunzip2 "$FILE"     ;;
-    *.rar)       unrar x "$FILE"     ;;
-    *.gz)        gunzip "$FILE"      ;;
-    *.tar)       tar xf "$FILE"      ;;
-    *.tbz2)      tar xjf "$FILE"     ;;
-    *.tgz)       tar xzf "$FILE"     ;;
-    *.zip)       unzip "$FILE"       ;;
-    *.Z)         uncompress "$FILE"  ;;
-    *.7z)        7z x "$FILE"        ;;
-    *)           echo "❌ Unsupported archive format: $FILE" ;;
+case $file in
+  *.tar.bz2|*.tbz2) tar xjf "$file" ;;
+  *.tar.gz|*.tgz)   tar xzf "$file" ;;
+  *.tar.xz)         tar xJf "$file" ;;
+  *.tar)            tar xf "$file" ;;
+  *.bz2)            bunzip2 -k "$file" ;;
+  *.gz)             gunzip -k "$file" ;;
+  *.Z)              uncompress "$file" ;;
+  *.zip)            unzip "$file" ;;
+  *.rar)            unrar x "$file" ;;
+  *.7z)             7z x "$file" ;;
+  *)
+    echo "extract: unsupported archive format: $file" 1>&2
+    exit 1
+    ;;
 esac
 
-echo "✅ Extraction complete!"
+echo "extraction complete"

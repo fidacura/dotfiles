@@ -2,18 +2,21 @@
 # Terminals
 # ─────────────────────────────────────────
 cask "alacritty"
-cask "iterm2"
 
 # ─────────────────────────────────────────
 # Shell & Terminal
 # ─────────────────────────────────────────
 brew "bat"
 brew "zsh"
+brew "zsh-autosuggestions"
+brew "zsh-history-substring-search"
+brew "zsh-syntax-highlighting"
 brew "tmux"
 brew "tree"
 brew "eza"
 brew "fd"
 brew "fzf"
+brew "grc"
 brew "ripgrep"
 brew "htop"
 brew "howdoi"
@@ -71,7 +74,7 @@ brew "gcc"
 # ─────────────────────────────────────────
 # Databases
 # ─────────────────────────────────────────
-# brew "postgresql@15", restart_service: :changed
+brew "postgresql"
 brew "sqlite"
 cask "pgadmin4"
 
