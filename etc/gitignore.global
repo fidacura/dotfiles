@@ -1,0 +1,8 @@
+*~
+*.bak
+*.tmp
+.*.swp
+.*.swo
+.DS_Store
+.claude/
+/notes.md
