@@ -1,0 +1,58 @@
+# ~/.config/alacritty/themes/fidacura.toml
+
+[colors.primary]
+background = "#100f0f"
+foreground = "#cecdc3"
+dim_foreground = "#878580"
+
+[colors.cursor]
+text = "#100f0f"
+cursor = "#cecdc3"
+
+[colors.vi_mode_cursor]
+text = "#100f0f"
+cursor = "#4385be"
+
+[colors.selection]
+text = "CellForeground"
+background = "#282726"
+
+[colors.search.matches]
+foreground = "#100f0f"
+background = "#d0a215"
+
+[colors.search.focused_match]
+foreground = "#100f0f"
+background = "#4385be"
+
+[colors.footer_bar]
+foreground = "#100f0f"
+background = "#cecdc3"
+
+[colors.hints.start]
+foreground = "#100f0f"
+background = "#d0a215"
+
+[colors.hints.end]
+foreground = "#100f0f"
+background = "#cecdc3"
+
+[colors.normal]
+black   = "#1c1b1a"
+red     = "#f85149"
+green   = "#0dbc79"
+yellow  = "#d29922"
+blue    = "#58a6ff"
+magenta = "#bc3fbc"
+cyan    = "#11a8cd"
+white   = "#e5e5e5"
+
+[colors.bright]
+black   = "#4d4d4d"
+red     = "#ff6b63"
+green   = "#2ee6a6"
+yellow  = "#e6b450"
+blue    = "#79b8ff"
+magenta = "#d86bd8"
+cyan    = "#4dd9f0"
+white   = "#ffffff"
